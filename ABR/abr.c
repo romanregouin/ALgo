@@ -141,29 +141,22 @@ void parcourir_arbre_largeur (Arbre_t a)
   enfiler(f,a);
   while(!file_vide(f)){
     Arbre_t tmp=defiler(f);
-    if(tmp->fdroite!=NULL)enfiler(f,tmp->fdroite);
-    if(tmp->fgauche!=NULL)enfiler(f,tmp->fgauche);
+    enfiler(f,tmp->fdroite);
+    enfiler(f,tmp->fgauche);
     //Instruction a faire sur le parcour en largeur (Exemple afficher la clef)
   }
 }
 
 void afficher_nombre_noeuds_par_niveau (Arbre_t a)
 {
-  /*
-    a completer
-  */
-
-  return ;
+  
 }
 
 
 int nombre_cles_arbre_r (Arbre_t a)
 {
-  /*
-    a completer
-  */
-  
-  return 0 ;
+  if(a==NULL)return 0;
+  return nombre_cles_arbre_r(a->fgauche)+nombre_cles_arbre_r(a->fdroite)+1;
 }
 
 int nombre_cles_arbre_nr (Arbre_t a)
@@ -177,11 +170,8 @@ int nombre_cles_arbre_nr (Arbre_t a)
 
 int trouver_cle_min (Arbre_t a)
 {
-  /*
-    a completer
-  */
-
-  return 0 ; 
+  if(a->fgauche==NULL)return a->cle;
+  return trouver_cle_min(a->fgauche);
 }
 
  
