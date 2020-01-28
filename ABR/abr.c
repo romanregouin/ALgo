@@ -131,7 +131,7 @@ int hauteur_arbre_r (Arbre_t a)
 
 int hauteur_arbre_nr (Arbre_t a)
 {
-  
+  return 0;
 }
 
 
