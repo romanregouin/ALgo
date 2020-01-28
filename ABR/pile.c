@@ -17,7 +17,7 @@ ppile_t creer_pile ()
 int detruire_pile (ppile_t p)
 {
   free(p);
-  return 1;
+  return 0;
 }  
 
 int pile_vide (ppile_t p)
@@ -36,8 +36,10 @@ pnoeud_t depiler (ppile_t p)
     printf("Erreur Pile Vide\n");
     return NULL;
   }
-  p->sommet--;
-  return p->Tab[p->sommet];
+  if(!pile_vide(p)){
+    p->sommet--;
+    return p->Tab[p->sommet];
+  }else return NULL;
 }
 
 int empiler (ppile_t p, pnoeud_t pn)
@@ -45,7 +47,7 @@ int empiler (ppile_t p, pnoeud_t pn)
   if(!pile_pleine(p)){
     p->Tab[p->sommet] = pn;
     p->sommet++;
-    return 1;
+    return 0;
   }
-  return -1; 
+  return 1; 
 }
