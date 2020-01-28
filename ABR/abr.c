@@ -125,31 +125,26 @@ void afficher_arbre (Arbre_t a, int niveau)
 
 int hauteur_arbre_r (Arbre_t a)
 {
-  /*
-    a completer
-  */
-  
-  return 0 ;
+  if(a==NULL)return -1;
+  return max(hauteur_arbre_r(a->fdroite),hauteur_arbre_r(a->fgauche))+1;
 }
 
 int hauteur_arbre_nr (Arbre_t a)
 {
-  /*
-    a completer
-  */
   
-  return 0 ;
 }
 
 
 void parcourir_arbre_largeur (Arbre_t a)
 {
-  /*
-    a completer
-    Utiliser une file, voir cours
-  */
-
-  return ;
+  pfile_t f=creer_file();
+  enfiler(f,a);
+  while(!file_vide(f)){
+    Arbre_t tmp=defiler(f);
+    if(tmp->fdroite!=NULL)enfiler(f,tmp->fdroite);
+    if(tmp->fgauche!=NULL)enfiler(f,tmp->fgauche);
+    //Instruction a faire sur le parcour en largeur (Exemple afficher la clef)
+  }
 }
 
 void afficher_nombre_noeuds_par_niveau (Arbre_t a)

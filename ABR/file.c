@@ -43,6 +43,7 @@ pnoeud_t defiler (pfile_t f)
 
 int enfiler (pfile_t f, pnoeud_t p)
 {
+  if(p==NULL)return 1;
   if(!file_pleine(f)){
     f->Tab[f->queue]=p;
     if(f->tete==-1)f->tete=f->queue;
