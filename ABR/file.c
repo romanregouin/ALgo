@@ -8,6 +8,7 @@ pfile_t creer_file ()
   pfile_t f=malloc(sizeof(pfile_t));
   f->tete=-1;
   f->queue=0;
+  return f;
 }
 
 int detruire_file (pfile_t f)
@@ -43,6 +44,7 @@ pnoeud_t defiler (pfile_t f)
 
 int enfiler (pfile_t f, pnoeud_t p)
 {
+  if(p==NULL)return 1;
   if(!file_pleine(f)){
     f->Tab[f->queue]=p;
     if(f->tete==-1)f->tete=f->queue;
