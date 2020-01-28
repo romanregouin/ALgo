@@ -32,13 +32,17 @@ int pile_pleine (ppile_t p)
 
 pnoeud_t depiler (ppile_t p)
 {
+  if(p==NULL){
+    printf("Erreur Pile Vide\n");
+    return NULL;
+  }
   p->sommet--;
   return p->Tab[p->sommet];
 }
 
 int empiler (ppile_t p, pnoeud_t pn)
 {
-  if(!pile_pleine){
+  if(!pile_pleine(p)){
     p->Tab[p->sommet] = pn;
     p->sommet++;
     return 1;
