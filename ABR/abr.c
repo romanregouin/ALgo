@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>  
 
 #include "abr.h"
 #include "pile.h"
@@ -131,7 +132,23 @@ int hauteur_arbre_r (Arbre_t a)
 
 int hauteur_arbre_nr (Arbre_t a)
 {
+<<<<<<< HEAD
+  if(a==NULL){
+    return -1;
+  }
+  ppile_t p = creer_pile();
+  int h = -1;
+  int res = empiler(p,a); //sert à rien de tester si pile pleine
+  while(!pile_vide(p)){
+    a = depiler(p);
+    res = empiler(p,a->fdroite); //le cas des feuilles est géré par empiler
+    res = empiler(p,a->fgauche);
+
+  }
+  return h;
+=======
   return 0;
+>>>>>>> master
 }
 
 
@@ -155,17 +172,17 @@ void afficher_nombre_noeuds_par_niveau (Arbre_t a)
 
 int nombre_cles_arbre_r (Arbre_t a)
 {
+<<<<<<< HEAD
+  return 0;
+=======
   if(a==NULL)return 0;
   return nombre_cles_arbre_r(a->fgauche)+nombre_cles_arbre_r(a->fdroite)+1;
+>>>>>>> master
 }
 
 int nombre_cles_arbre_nr (Arbre_t a)
 {
-  /*
-    a completer
-  */
-  
-  return 0 ;
+  return ((int)pow((float)2,(float)hauteur_arbre_r(a))-1);
 }
 
 int trouver_cle_min (Arbre_t a)
@@ -220,12 +237,9 @@ int arbre_parfait (Arbre_t a)
 
 Arbre_t rechercher_cle_sup_arbre (Arbre_t a, int valeur)
 {
-  /*
-    a completer
-  */
-
-  return NULL ;
-  
+  if(a==NULL){
+    return NULL;
+  }
 }
 
 Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur)
