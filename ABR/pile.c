@@ -6,7 +6,7 @@
 ppile_t creer_pile ()
 {
   ppile_t p;
-  p = malloc(sizeof(ppile_t));
+  p = malloc(sizeof(pile_t));
   if(p==NULL){
     printf("Erreur allocation\n");
     exit(-1);
