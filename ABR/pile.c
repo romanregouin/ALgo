@@ -45,13 +45,7 @@ pnoeud_t depiler (ppile_t p)
 
 int empiler (ppile_t p, pnoeud_t pn)
 {
-<<<<<<< HEAD
-  if(pn==NULL){
-    return 1;
-  }
-=======
   if(pn==NULL)return 1;
->>>>>>> master
   if(!pile_pleine(p)){
     p->Tab[p->sommet] = pn;
     p->sommet++;
