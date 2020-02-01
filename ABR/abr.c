@@ -213,11 +213,25 @@ int nombre_cles_arbre_r (Arbre_t a)
   if(a==NULL)return 0;
   return nombre_cles_arbre_r(a->fgauche)+nombre_cles_arbre_r(a->fdroite)+1;
 }
-/*
+
 int nombre_cles_arbre_nr (Arbre_t a)
 {
-  return ((int)pow((float)2,(float)hauteur_arbre_r(a))-1);
-}*/
+  if(a==NULL){
+    return -1;
+  }
+  ppile_t p = creer_pile();
+  int nb=0;
+  empiler(p,a);
+  while(!pile_vide(p)){
+    a = depiler(p);
+    if(a!=NULL){
+      nb++;
+      empiler(p,a->fdroite);
+      empiler(p,a->fgauche);
+    }
+  }
+  return nb;
+}
 
 int trouver_cle_min (Arbre_t a)
 {
@@ -229,22 +243,28 @@ int trouver_cle_min (Arbre_t a)
 
 void imprimer_liste_cle_triee_r (Arbre_t a)
 {
-  /*
-    a completer
-  */
-
-  
-  return ;
+  if(a==NULL)return;
+  imprimer_liste_cle_triee_r(a->fgauche);
+  printf(" %d ",a->cle);
+  imprimer_liste_cle_triee_r(a->fdroite);
 }
 
 void imprimer_liste_cle_triee_nr (Arbre_t a)
-{
-  /*
-    a completer
-  */
-
-  
-  return ;
+{/*
+ if(a==NULL){
+    return ;
+  }
+  ppile_t p = creer_pile();
+  empiler(p,a);
+  while(!pile_vide(p)){
+    a = depiler(p);
+    
+    if(a->fgauche!=NULL){
+      empiler(p,a->fdroite);
+      empiler(p,a);
+      empiler(p,a->fgauche);
+    }
+  }*/
 }
 
 
