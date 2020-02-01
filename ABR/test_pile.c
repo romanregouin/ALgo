@@ -20,8 +20,17 @@ int main (int argc, char**argv)
 	printf("\n\n\n\n");
 	pnoeud_t noeud = malloc(sizeof(noeud_t));
 	noeud->cle = 5;
-	noeud->fdroite=NULL;
-	noeud->fgauche=NULL;
+	noeud->fdroite=malloc(sizeof(noeud_t));;
+	noeud->fgauche=malloc(sizeof(noeud_t));;
+	noeud->fdroite->cle=1;
+	noeud->fdroite->fgauche=malloc(sizeof(noeud_t));
+	noeud->fdroite->fgauche->cle=2;
+	noeud->fdroite->fgauche->fdroite=NULL;
+	noeud->fdroite->fgauche->fgauche=NULL;
+	noeud->fdroite->fdroite=NULL;
+	noeud->fgauche->cle=1;
+	noeud->fgauche->fgauche=NULL;
+	noeud->fgauche->fdroite=NULL;
 	for (int i=0;i<5;i++){
 		empiler(p,noeud);
 		afficher_pile(p);
@@ -43,5 +52,9 @@ int main (int argc, char**argv)
 	depiler(p);
 	afficher_pile(p);
 	printf("\n\n\n\n");
+
+	int h=hauteur_arbre_nr(noeud);
+	printf("Hauteur de l'arbre h=%d\n\n",h);
+	afficher_nombre_noeuds_par_niveau(noeud);
 }
 

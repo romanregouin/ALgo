@@ -132,23 +132,33 @@ int hauteur_arbre_r (Arbre_t a)
 
 int hauteur_arbre_nr (Arbre_t a)
 {
-<<<<<<< HEAD
   if(a==NULL){
     return -1;
   }
   ppile_t p = creer_pile();
-  int h = -1;
-  int res = empiler(p,a); //sert à rien de tester si pile pleine
+  int h =0;
+  int max=0,n=0;
+  empiler(p,a);
+  int* tab=malloc(sizeof(int)*20); 
+  tab[n]=h;
+  n++;
   while(!pile_vide(p)){
     a = depiler(p);
-    res = empiler(p,a->fdroite); //le cas des feuilles est géré par empiler
-    res = empiler(p,a->fgauche);
-
+    n--;
+    h=tab[n];
+    if(a!=NULL){
+      if(h>max)max=h;
+      h++;
+      empiler(p,a->fdroite);
+      tab[n]=h;
+      n++;
+      empiler(p,a->fgauche);
+      tab[n]=h;
+      n++;
+    }
   }
-  return h;
-=======
-  return 0;
->>>>>>> master
+  
+  return max;
 }
 
 
@@ -166,24 +176,48 @@ void parcourir_arbre_largeur (Arbre_t a)
 
 void afficher_nombre_noeuds_par_niveau (Arbre_t a)
 {
-  
+    if(a==NULL){
+    printf("Arbre vide (aucune noeud a afficher)");
+  }
+  ppile_t p = creer_pile();
+  int h =0;
+  int n=0;
+  empiler(p,a);
+  int* tab=malloc(sizeof(int)*20); 
+  tab[n]=h;
+  n++;
+  int* tab2=malloc(sizeof(int)*20);
+  for(int i=0;i<20;i++)tab[i]=0;
+  while(!pile_vide(p)){
+    a = depiler(p);
+    n--;
+    h=tab[n];
+    if(a!=NULL){
+      tab2[h]++;
+      h++;
+      empiler(p,a->fdroite);
+      tab[n]=h;
+      n++;
+      empiler(p,a->fgauche);
+      tab[n]=h;
+      n++;
+    }
+  }
+  printf("Nb noeud au niveau 0 : 1\n");
+  for(int i=1;i<20 && tab2[i]!=0;i++)printf("Nb noeud au niveau %d : %d\n",i,tab2[i]);
 }
 
 
 int nombre_cles_arbre_r (Arbre_t a)
 {
-<<<<<<< HEAD
-  return 0;
-=======
   if(a==NULL)return 0;
   return nombre_cles_arbre_r(a->fgauche)+nombre_cles_arbre_r(a->fdroite)+1;
->>>>>>> master
 }
-
+/*
 int nombre_cles_arbre_nr (Arbre_t a)
 {
   return ((int)pow((float)2,(float)hauteur_arbre_r(a))-1);
-}
+}*/
 
 int trouver_cle_min (Arbre_t a)
 {
@@ -240,6 +274,7 @@ Arbre_t rechercher_cle_sup_arbre (Arbre_t a, int valeur)
   if(a==NULL){
     return NULL;
   }
+  return NULL;
 }
 
 Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur)
