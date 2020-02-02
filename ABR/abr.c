@@ -176,7 +176,7 @@ void parcourir_arbre_largeur (Arbre_t a)
 
 void afficher_nombre_noeuds_par_niveau (Arbre_t a)
 {
-    if(a==NULL){
+  if(a==NULL){
     printf("Arbre vide (aucune noeud a afficher)");
   }
   ppile_t p = creer_pile();
@@ -250,7 +250,7 @@ void imprimer_liste_cle_triee_r (Arbre_t a)
 }
 
 void imprimer_liste_cle_triee_nr (Arbre_t a)
-{/*
+{
  if(a==NULL){
     return ;
   }
@@ -258,32 +258,96 @@ void imprimer_liste_cle_triee_nr (Arbre_t a)
   empiler(p,a);
   while(!pile_vide(p)){
     a = depiler(p);
-    
+    if(a->fgauche!=NULL){
+      while(a->fgauche!=NULL){
+        empiler(p,a);
+        a=a->fgauche;
+        a
+      }
+    }
     if(a->fgauche!=NULL){
       empiler(p,a->fdroite);
       empiler(p,a);
       empiler(p,a->fgauche);
     }
-  }*/
+  }
 }
 
 
+int puissance(int a,int n){
+  if(n==0)return 1;
+  if(n==1)return a;
+  if(n%2==0)return puissance(a*a,n/2);
+  else return n*puissance(n*n,(n-1)/2);
+}
+
 int arbre_plein (Arbre_t a)
 {
-  /*
-    a completer
-  */
-  
-  return 0 ;
+  if(a==NULL)return 1;
+  ppile_t p = creer_pile();
+  int h =0;
+  int n=0;
+  empiler(p,a);
+  int* tab=malloc(sizeof(int)*20); 
+  tab[n]=h;
+  n++;
+  int* tab2=malloc(sizeof(int)*20);
+  for(int i=0;i<20;i++)tab[i]=0;
+  while(!pile_vide(p)){
+    a = depiler(p);
+    n--;
+    h=tab[n];
+    if(a!=NULL){
+      tab2[h]++;
+      h++;
+      empiler(p,a->fdroite);
+      tab[n]=h;
+      n++;
+      empiler(p,a->fgauche);
+      tab[n]=h;
+      n++;
+    }
+  }
+  int drapeau=0;
+  for(int i=0;i<20 && tab2[i]!=0;i++){
+    if(tab2[i]!=puissance(2,i))drapeau++;
+    if(drapeau>1)return 0;
+  }
+  return 1;
 }
 
 int arbre_parfait (Arbre_t a)
 {
-  /*
-    a completer
-  */
-  
-  return 0 ;
+  if(a==NULL)return 1;
+  ppile_t p = creer_pile();
+  int h =0;
+  int n=0;
+  empiler(p,a);
+  int* tab=malloc(sizeof(int)*20); 
+  tab[n]=h;
+  n++;
+  int* tab2=malloc(sizeof(int)*20);
+  for(int i=0;i<20;i++)tab[i]=0;
+  while(!pile_vide(p)){
+    a = depiler(p);
+    n--;
+    h=tab[n];
+    if(a!=NULL){
+      tab2[h]++;
+      h++;
+      empiler(p,a->fdroite);
+      tab[n]=h;
+      n++;
+      empiler(p,a->fgauche);
+      tab[n]=h;
+      n++;
+    }
+  }
+  int drapeau=0;
+  for(int i=0;i<20 && tab2[i]!=0;i++){
+    if(tab2[i]!=puissance(2,i))return 0;
+  }
+  return 1;
 }
 
 
@@ -291,20 +355,27 @@ int arbre_parfait (Arbre_t a)
 
 Arbre_t rechercher_cle_sup_arbre (Arbre_t a, int valeur)
 {
-  if(a==NULL){
-    return NULL;
-  }
-  return NULL;
+ if(a==NULL)return NULL;
+  Arbre_t res;
+  if(a->cle==valeur)return a->fdroite;
+  else if(a->cle<valeur)res=rechercher_cle_inf_arbre(a->fdroite,valeur); // J'ai Rien Tester de tout ça 
+  else res=rechercher_cle_inf_arbre(a->fgauche,valeur);
+  if(res==NULL && a->cle>valeur)return a;
+  if(res!=NULL && a->cle>valeur && a->cle<res->cle)return a;
+  return res;
 }
 
 Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur)
 {
-  /*
-    a completer
-  */
+  if(a==NULL)return NULL;
+  Arbre_t res;
+  if(a->cle==valeur)return a->fgauche;
+  else if(a->cle<valeur)res=rechercher_cle_inf_arbre(a->fdroite,valeur); // Ca non plus faudra tester NORMALEMENT ça marche 
+  else res=rechercher_cle_inf_arbre(a->fgauche,valeur);
+  if(res==NULL && a->cle<valeur)return a;
+  if(res!=NULL && a->cle<valeur && a->cle>res->cle)return a;
+  return res;
 
-  return NULL ;
-  
 }
 
 
