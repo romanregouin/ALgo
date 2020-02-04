@@ -3,6 +3,7 @@
 
 typedef struct n {
   int cle;
+  int hauteur;
   struct n *fgauche, *fdroite;
 } noeud_t, *pnoeud_t ;
 

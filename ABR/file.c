@@ -5,7 +5,7 @@
 
 pfile_t creer_file ()
 {
-  pfile_t f=malloc(sizeof(pfile_t));
+  pfile_t f=malloc(sizeof(file_t));
   f->tete=-1;
   f->queue=0;
   return f;

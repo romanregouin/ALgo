@@ -6,7 +6,7 @@
 ppile_t creer_pile ()
 {
   ppile_t p;
-  p = malloc(sizeof(ppile_t));
+  p = malloc(sizeof(pile_t));
   if(p==NULL){
     printf("Erreur allocation\n");
     exit(-1);
@@ -45,13 +45,6 @@ pnoeud_t depiler (ppile_t p)
 
 int empiler (ppile_t p, pnoeud_t pn)
 {
-<<<<<<< HEAD
-  if(pn==NULL){
-    return 1;
-  }
-=======
-  if(pn==NULL)return 1;
->>>>>>> master
   if(!pile_pleine(p)){
     p->Tab[p->sommet] = pn;
     p->sommet++;
