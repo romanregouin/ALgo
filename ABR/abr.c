@@ -387,23 +387,50 @@ Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur)
 
 Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
 {
+  Arbre_t elem;
+  if(a==NULL){
+    return NULL;
+  }
+  elem = rechercher_cle_arbre(a,cle);
+  if(elem==NULL){
+    return a;
+  }
   
-  return NULL ;
 }
 
 
 
 Arbre_t intersection_deux_arbres (Arbre_t a1, Arbre_t a2)
 {
-  
+  Arbre_t res=NULL,tmp;
+
+  pfile_t f=creer_file();
+  enfiler(f,a1);
+  while(!file_vide(f)){
+    tmp=defiler(f);
+    enfiler(f,tmp->fdroite);
+    enfiler(f,tmp->fgauche);
+    if(rechercher_cle_arbre(a2,tmp->cle)!=NULL){
+      res = ajouter_cle(res,tmp->cle);
+    }
+  }
+  return res; 
 }
 
 Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2)
 {
-  /*
-    a completer
-  */
+  Arbre_t res,tmp;
 
-  return NULL ;
+  pfile_t f=creer_file();
+  enfiler(f,a1);
+  enfiler(f,a2);
+  while(!file_vide(f)){
+    tmp=defiler(f);
+    enfiler(f,tmp->fdroite);
+    enfiler(f,tmp->fgauche);
+    res = ajouter_cle(res,tmp->cle);
+  }
+  
+  return res;
 }
 
