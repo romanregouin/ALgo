@@ -255,20 +255,19 @@ void imprimer_liste_cle_triee_nr (Arbre_t a)
     return ;
   }
   ppile_t p = creer_pile();
-  empiler(p,a);
+  while(a->fgauche!=NULL){
+    empiler(p,a);
+    a=a->fgauche;
+  }
   while(!pile_vide(p)){
     a = depiler(p);
-    if(a->fgauche!=NULL){
+    printf("%d \n",a->cle);
+    if(a->fdroite!=NULL){
+      a=a->fdroite;
       while(a->fgauche!=NULL){
         empiler(p,a);
         a=a->fgauche;
-        a
       }
-    }
-    if(a->fgauche!=NULL){
-      empiler(p,a->fdroite);
-      empiler(p,a);
-      empiler(p,a->fgauche);
     }
   }
 }
@@ -381,10 +380,7 @@ Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur)
 
 Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
 {
-  /*
-    a completer
-  */
-
+  
   return NULL ;
 }
 
