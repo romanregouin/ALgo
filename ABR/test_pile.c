@@ -1,60 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "abr.h"
 #include "pile.h"
 
-void afficher_pile(ppile_t p){
-	//printf("sommet = %d\n",p->sommet);
-	for (int i=0;i<p->sommet;i++){
-		afficher_arbre(p->Tab[i],0);
-	}
-	printf("fin_pile\n");
-}
-
-
 int main (int argc, char**argv)
 {
 	ppile_t p = creer_pile();
-	afficher_pile(p);
-	printf("\n\n\n\n");
-	pnoeud_t noeud = malloc(sizeof(noeud_t));
-	noeud->cle = 5;
-	noeud->fdroite=malloc(sizeof(noeud_t));;
-	noeud->fgauche=malloc(sizeof(noeud_t));;
-	noeud->fdroite->cle=1;
-	noeud->fdroite->fgauche=malloc(sizeof(noeud_t));
-	noeud->fdroite->fgauche->cle=2;
-	noeud->fdroite->fgauche->fdroite=NULL;
-	noeud->fdroite->fgauche->fgauche=NULL;
-	noeud->fdroite->fdroite=NULL;
-	noeud->fgauche->cle=1;
-	noeud->fgauche->fgauche=NULL;
-	noeud->fgauche->fdroite=NULL;
-	for (int i=0;i<5;i++){
+	assert(pile_vide(p));
+	assert(!pile_pleine(p));
+	assert(p->sommet==0);
+	
+	/* empilements successifs */
+	for (int i=0; i<MAX_PILE_SIZE-1; i++){
+		pnoeud_t noeud = malloc(sizeof(noeud_t));
+		noeud->cle = i;
 		empiler(p,noeud);
-		afficher_pile(p);
-		printf("\n\n\n\n");
-		
+		assert(!pile_vide(p));
+		assert(!pile_pleine(p));
+		assert(p->sommet==i+1);
+		assert(p->Tab[i]==noeud);
 	}
+	//dernier empilement : apres ça la pile est pleine
+	pnoeud_t noeud = malloc(sizeof(noeud_t));
+	noeud->cle = MAX_PILE_SIZE-1;
 	empiler(p,noeud);
-	printf("On a passé les empiler \n\n");
-	while(!pile_vide(p)){
-		depiler(p);
-		printf("sommet %d\n",p->sommet);
-		printf("pile vide ? %d\n",pile_vide(p));
-		printf("pile pleine ? %d\n",pile_pleine(p));
-		printf("\n\n\n\n");
-		//afficher_pile(p);
-		printf("\n\n\n\n");
-		
+	assert(!pile_vide(p));
+	assert(pile_pleine(p));
+	assert(p->sommet==MAX_PILE_SIZE);
+	assert(p->Tab[MAX_PILE_SIZE-1]==noeud);
+	
+	assert(empiler(p,noeud)==1); //erreur lors de l'empilement car pile pleine
+	
+	/* depilements successifs */
+	for (int i=MAX_PILE_SIZE-1;i>0;i--){
+		pnoeud_t elem = depiler(p);
+		assert(!pile_pleine(p));
+		assert(!pile_vide(p));
+		assert(elem->cle==i);
+		assert(p->sommet==i);
+		free(elem);
 	}
-	depiler(p);
-	afficher_pile(p);
-	printf("\n\n\n\n");
-
-	int h=hauteur_arbre_nr(noeud);
-	printf("Hauteur de l'arbre h=%d\n\n",h);
-	afficher_nombre_noeuds_par_niveau(noeud);
+	
+	//dernier depilement : apres ça la pile est vide
+	pnoeud_t elem = depiler(p);
+	assert(!pile_pleine(p));
+	assert(pile_vide(p));
+	assert(elem->cle==0);
+	assert(p->sommet==0);
+	free(elem);
+	
+	assert(depiler(p)==NULL); //depilement sur une pile vide
+	
 }
 

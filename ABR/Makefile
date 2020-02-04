@@ -1,4 +1,4 @@
-all: test_abr
+all: test_abr test_pile test_file
 
 abr.o: abr.c abr.h pile.h file.h
 	gcc -g -Wall -c abr.c
@@ -20,8 +20,14 @@ test_pile.o: test_pile.c abr.h pile.h file.h
 
 test_pile: test_pile.o abr.o pile.o file.o
 	gcc -g -o test_pile abr.o pile.o test_pile.o file.o
+	
+test_file.o: test_file.c abr.h pile.h file.h
+	gcc -Wall -g -c test_file.c
+
+test_file: test_file.o abr.o pile.o file.o
+	gcc -g -o test_file abr.o pile.o test_file.o file.o
 
 clean:
-	rm -f *.o *~ test_abr test_pile
+	rm -f *.o *~ test_abr test_pile test_file
 
 
