@@ -132,23 +132,61 @@ int hauteur_arbre_r (Arbre_t a)
 
 int hauteur_arbre_nr (Arbre_t a)
 {
-<<<<<<< HEAD
   if(a==NULL){
     return -1;
   }
-  ppile_t p = creer_pile();
-  int h = -1;
-  int res = empiler(p,a); //sert à rien de tester si pile pleine
-  while(!pile_vide(p)){
-    a = depiler(p);
-    res = empiler(p,a->fdroite); //le cas des feuilles est géré par empiler
-    res = empiler(p,a->fgauche);
-
+  if((a->fdroite==NULL)&&(a->fgauche==NULL)){
+    return 0;
   }
-  return h;
-=======
-  return 0;
->>>>>>> master
+
+  int hauteur = 0;
+  int ancien_nb = 1;
+  int new_nb = 2*ancien_nb;
+  int nb_next_level = 0;
+  if((a->fdroite==NULL)||(a->fgauche==NULL)){
+    new_nb--;
+  }
+  noeud_t** level = malloc(new_nb*(sizeof(pnoeud_t)));
+  if(a->fdroite==NULL){
+    level[0] = a->fgauche;
+  }else if(a->fgauche==NULL){
+    level[0] = a->fdroite;
+  }else{
+    level[0] = a->fgauche;
+    level[1] = a->fdroite;
+  }
+  hauteur++;
+
+  for(int i=0;i<new_nb;i++){
+    noeud_t* tmp = level[i];
+    if(tmp->fdroite!=NULL){
+      nb_next_level++;
+    }
+    if(tmp->fgauche!=NULL){
+      nb_next_level++;
+    }
+  }
+  int indice_next_level = 0;
+  while(nb_next_level!=0){
+    hauteur++;
+    noeud_t** next_level = malloc(nb_next_level*(sizeof(pnoeud_t)));
+    for(int i=0;i<new_nb;i++){
+      noeud_t* tmp = level[i];
+      if(tmp->fdroite!=NULL){
+        next_level[indice_next_level] = tmp->fdroite;
+        indice_next_level++;
+      }
+      if(tmp->fgauche!=NULL){
+        next_level[indice_next_level] = tmp->fgauche;
+        indice_next_level++;
+      }
+    }
+    free(level);
+    for(int i=0;i<nb_next_level;i++){
+      noeud_t* tmp = next_level[i];
+    }
+  }
+  return hauteur;
 }
 
 
@@ -172,12 +210,8 @@ void afficher_nombre_noeuds_par_niveau (Arbre_t a)
 
 int nombre_cles_arbre_r (Arbre_t a)
 {
-<<<<<<< HEAD
-  return 0;
-=======
   if(a==NULL)return 0;
   return nombre_cles_arbre_r(a->fgauche)+nombre_cles_arbre_r(a->fdroite)+1;
->>>>>>> master
 }
 
 int nombre_cles_arbre_nr (Arbre_t a)
