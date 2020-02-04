@@ -3,6 +3,7 @@
 
 typedef struct n {
   int cle;
+  int h;
   struct n *fgauche, *fdroite;
 } noeud_t, *pnoeud_t ;
 
@@ -36,9 +37,9 @@ int arbre_plein (Arbre_t a) ;
 
 int arbre_parfait (Arbre_t a) ;
 
-Arbre_t rechercher_cle_sup_arbre (Arbre_t a, int valeur) ;
+Arbre_t rechercher_cle_sup_arbre (Arbre_t a, int valeur,Arbre_t max) ;
 
-Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur) ;
+Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur,Arbre_t max) ;
 
 Arbre_t detruire_cle_arbre (Arbre_t a, int cle) ;
 
