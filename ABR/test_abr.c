@@ -3,6 +3,17 @@
 
 #include "abr.h"
 
+
+int egalite_arbre(Arbre_t a1, Arbre_t a2){
+  if(a1==NULL && a2==NULL)return 1;
+  else if(a1==NULL || a2==NULL)return 0;
+  if(a1->cle!=a2->cle)return 0;
+  return egalite_arbre(a1->fgauche,a2->fgauche)== egalite_arbre(a1->fdroite,a2->fdroite);
+}
+
+
+
+
 int main (int argc, char**argv)
 {
   Arbre_t a ;
@@ -147,4 +158,27 @@ int main (int argc, char**argv)
     succes++;
     printf("Succes fonction recherche_cle_inf et sup !\n");
   }else printf("Erreur: %d erreurs dans les tests des fonctions rechercher_cle_inf et sup !\n",err);
+
+
+
+  Arbre_t b=lire_arbre("arbre2");
+  Arbre_t c=lire_arbre("arbre3");
+  Arbre_t tmp=union_deux_arbres(a,a);
+  err=0;
+  afficher_arbre(tmp,0);
+  printf("--\n");
+  afficher_arbre(a,0);
+  if(!egalite_arbre(a,tmp)){
+    err++;
+    printf("Err 1;\n");
+  }
+  tmp=union_deux_arbres(a,b);
+  afficher_arbre(tmp,0);
+  if(err==0){
+    succes++;
+    printf("Succes fonction Union_arbre !\n");
+  }else printf("Erreur: %d erreurs dans les tests des fonctions Union_arbre !\n",err);
+
+
+  printf("Passé %d/13 Tests !\n",succes);
 }
