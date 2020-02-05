@@ -38,6 +38,8 @@ int nombre_cles_arbre_nr (Arbre_t a) ;
 
 int trouver_cle_min (Arbre_t a) ;
 
+int trouver_cle_max (Arbre_t a) ;
+
 void imprimer_liste_cle_triee_r (Arbre_t a) ;
 
 void imprimer_liste_cle_triee_nr (Arbre_t a) ;
@@ -45,6 +47,10 @@ void imprimer_liste_cle_triee_nr (Arbre_t a) ;
 int arbre_plein (Arbre_t a) ;
 
 int arbre_parfait (Arbre_t a) ;
+
+Arbre_t trouver_arbre_min(Arbre_t a);
+
+Arbre_t trouver_arbre_max(Arbre_t a);
 
 Arbre_t rechercher_cle_sup_arbre (Arbre_t a, int valeur,Arbre_t max) ;
 
