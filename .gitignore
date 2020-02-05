@@ -36,6 +36,8 @@
 *.x86_64
 *.hex
 test_abr
+test_file
+test_pile
 
 # Debug files
 *.dSYM/
