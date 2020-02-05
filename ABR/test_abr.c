@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "pile.h"
 #include "abr.h"
 
 
@@ -162,7 +162,7 @@ int main (int argc, char**argv)
 
 
   Arbre_t b=lire_arbre("arbre2");
-  Arbre_t c=lire_arbre("arbre3");
+ // Arbre_t c=lire_arbre("arbre3");
   Arbre_t tmp=union_deux_arbres(a,a);
   err=0;
   afficher_arbre(tmp,0);
@@ -170,10 +170,31 @@ int main (int argc, char**argv)
   afficher_arbre(a,0);
   if(!egalite_arbre(a,tmp)){
     err++;
-    printf("Err 1;\n");
+    printf("Err 1;");
   }
+  int err2=0;
+  Arbre_t tmp2;
   tmp=union_deux_arbres(a,b);
-  afficher_arbre(tmp,0);
+  ppile_t p = creer_pile();
+  empiler(p,tmp);
+  while(!pile_vide(p)){
+    tmp2 = depiler(p);
+    if(a!=NULL){
+      if(rechercher_cle_arbre(a,tmp2->cle)==NULL && rechercher_cle_arbre(b,tmp2->cle)==NULL)err2++;
+      empiler(p,a->fdroite);
+      empiler(p,a->fgauche);
+    }
+  }
+  if(err2>0){
+    err++;
+    printf("Err2;")
+  }
+
+
+
+
+  
+  printf("\n");
   if(err==0){
     succes++;
     printf("Succes fonction Union_arbre !\n");

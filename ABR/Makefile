@@ -1,33 +1,32 @@
-all: test_abr test_pile test_file
+CC = gcc
+CFLAGS = -g -Wall -Werror
+SRC = $(wildcard *.c)
+OBJ = $(SRC:.c=.o)
+EXE = test_abr test_file test_pile
 
-abr.o: abr.c abr.h pile.h file.h
-	gcc -g -Wall -c abr.c
+all: $(EXE)
 
-pile.o: pile.h pile.c
-	gcc -Wall -c pile.c
-
-file.o: file.h file.c
-	gcc -Wall -c file.c
-
-test_abr.o: test_abr.c abr.h
-	gcc -Wall -c test_abr.c
+%.o:%.c
+	$(CC) $(CFLAGS) -c $<
 
 test_abr: test_abr.o pile.o file.o abr.o
-	gcc -g -o test_abr abr.o pile.o file.o test_abr.o
-
-test_pile.o: test_pile.c abr.h pile.h file.h
-	gcc -Wall -g -c test_pile.c
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_pile: test_pile.o abr.o pile.o file.o
-	gcc -g -o test_pile abr.o pile.o test_pile.o file.o
-	
-test_file.o: test_file.c abr.h pile.h file.h
-	gcc -Wall -g -c test_file.c
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_file: test_file.o abr.o pile.o file.o
-	gcc -g -o test_file abr.o pile.o test_file.o file.o
+	$(CC) $(CFLAGS) -o $@ $^
 
+abr.o:abr.h pile.h file.h
+pile.o: pile.h
+file.o: file.h
+test_abr.o: abr.h
+test_pile.o: abr.h pile.h file.h
+test_file.o: abr.h pile.h file.h
+
+.PHONY : clean
 clean:
-	rm -f *.o *~ test_abr test_pile test_file
+	rm -f $(OBJ) $(EXE)
 
 

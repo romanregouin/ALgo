@@ -58,7 +58,7 @@ Arbre_t rechercher_cle_arbre (Arbre_t a, int valeur)
     }
 }
 
-Arbre_t ajouter_cle (Arbre_t a, int cle)
+Arbre_t   ajouter_cle (Arbre_t a, int cle)
 {
   Arbre_t n ;
   Arbre_t ptrouve ;
@@ -436,7 +436,7 @@ Arbre_t intersection_deux_arbres (Arbre_t a1, Arbre_t a2)
 
 Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2)
 {
-  Arbre_t res,tmp;
+  Arbre_t res=NULL,tmp;
 
   pfile_t f=creer_file();
   enfiler(f,a1);

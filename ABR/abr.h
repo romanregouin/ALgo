@@ -22,6 +22,8 @@ typedef pnoeud_avl Arbre_avl;
 
 Arbre_t lire_arbre (char *nom_fichier) ;
 
+Arbre_t rechercher_cle_arbre (Arbre_t a, int valeur);
+
 void afficher_arbre (Arbre_t a, int niveau) ;
 
 int hauteur_arbre_r (Arbre_t a) ;
