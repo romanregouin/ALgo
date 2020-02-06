@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pile.h"
+
 #include "abr.h"
+#include "pile.h"
 
 
 int egalite_arbre(Arbre_t a1, Arbre_t a2){
@@ -187,7 +188,7 @@ int main (int argc, char**argv)
   }
   if(err2>0){
     err++;
-    printf("Err2;")
+    printf("Err2");
   }
 
 

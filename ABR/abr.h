@@ -66,6 +66,12 @@ Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2) ;
 
 //ALV
 
+int calcul_balances(Arbre_avl a);
+
 Arbre_avl rotation_gauche(Arbre_avl a);
 
 Arbre_avl rotation_droite(Arbre_avl a);
+
+Arbre_avl double_rotation_gauche(Arbre_avl a);
+
+Arbre_avl double_rotation_droite(Arbre_avl a);
