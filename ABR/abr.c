@@ -396,7 +396,7 @@ Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
     return a;
   }else{
     if(feuille(elem)){
-      elem=NULL;
+      elem=NULL; //?
       return a;
     }else{
       if((elem->fdroite!=NULL)&&(elem->fgauche!=NULL)){

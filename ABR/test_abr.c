@@ -162,15 +162,11 @@ int main (int argc, char**argv)
 
 
   Arbre_t b=lire_arbre("arbre2");
- // Arbre_t c=lire_arbre("arbre3");
   Arbre_t tmp=union_deux_arbres(a,a);
   err=0;
-  afficher_arbre(tmp,0);
-  printf("--\n");
-  afficher_arbre(a,0);
   if(!egalite_arbre(a,tmp)){
     err++;
-    printf("Err 1;");
+    printf("Err 1:arbre1/1;  ");
   }
   int err2=0;
   Arbre_t tmp2;
@@ -179,15 +175,36 @@ int main (int argc, char**argv)
   empiler(p,tmp);
   while(!pile_vide(p)){
     tmp2 = depiler(p);
-    if(a!=NULL){
+    if(tmp2!=NULL){
       if(rechercher_cle_arbre(a,tmp2->cle)==NULL && rechercher_cle_arbre(b,tmp2->cle)==NULL)err2++;
-      empiler(p,a->fdroite);
-      empiler(p,a->fgauche);
+      empiler(p,tmp2->fdroite);
+      empiler(p,tmp2->fgauche);
     }
   }
+
   if(err2>0){
+    printf("Err2: Arbre1/2; ");
     err++;
-    printf("Err2;")
+  }
+
+  err2=0;
+  b=lire_arbre("arbre3");
+  a=lire_arbre("arbre4");
+  tmp=union_deux_arbres(a,b);
+  empiler(p,tmp);
+  while(!pile_vide(p)){
+    tmp2 = depiler(p);
+    if(tmp2!=NULL){
+      if(rechercher_cle_arbre(a,tmp2->cle)==NULL && rechercher_cle_arbre(b,tmp2->cle)==NULL)err2++;
+      empiler(p,tmp2->fdroite);
+      empiler(p,tmp2->fgauche);
+    }
+  }
+
+
+  if(err2>0){
+    printf("Err3: Arbre3/4;  ");
+    err++;
   }
 
 
@@ -201,5 +218,64 @@ int main (int argc, char**argv)
   }else printf("Erreur: %d erreurs dans les tests des fonctions Union_arbre !\n",err);
 
 
-  printf("Passé %d/13 Tests !\n",succes);
+  err=0;
+  err2=0;
+  b=lire_arbre("arbre3");
+  a=lire_arbre("arbre4");
+  tmp=intersection_deux_arbres(a,b);
+  empiler(p,tmp);
+  while(!pile_vide(p)){
+    tmp2 = depiler(p);
+    if(tmp2!=NULL){
+      if(rechercher_cle_arbre(a,tmp2->cle)==NULL || rechercher_cle_arbre(b,tmp2->cle)==NULL)err2++;
+      empiler(p,tmp2->fdroite);
+      empiler(p,tmp2->fgauche);
+    }
+  }
+
+
+  if(err2>0){
+    printf("Err1: Arbre3/4;  ");
+    err++;
+  }
+
+
+  err2=0;
+  b=lire_arbre("arbre2");
+  a=lire_arbre("arbre1");
+  tmp=intersection_deux_arbres(a,b);
+  empiler(p,tmp);
+  while(!pile_vide(p)){
+    tmp2 = depiler(p);
+    if(tmp2!=NULL){
+      if(rechercher_cle_arbre(a,tmp2->cle)==NULL || rechercher_cle_arbre(b,tmp2->cle)==NULL)err2++;
+      empiler(p,tmp2->fdroite);
+      empiler(p,tmp2->fgauche);
+    }
+  }
+
+
+  if(err2>0){
+    printf("Err1: Arbre1/2;  ");
+    err++;
+  }
+
+
+
+  printf("\n");
+  if(err==0){
+    succes++;
+    printf("Succes fonction Intersection_arbre !\n");
+  }else printf("Erreur: %d erreurs dans les tests des fonctions Intersection_arbre !\n",err);
+
+
+  err=0;
+  b=lire_arbre("test_delet_cle");
+  afficher_arbre(a,0);
+  afficher_arbre(b,0);
+  a=detruire_cle_arbre(a,8);
+  if(!egalite_arbre(a,b))err++;
+  else succes++;
+  afficher_arbre(a,0);
+  printf("\nPassé %d/13 Tests !\n",succes);
 }
