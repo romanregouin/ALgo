@@ -3,8 +3,6 @@
 #include <math.h>  
 #include <limits.h>
 #include "avl.h"
-#include "pile.h"
-#include "file.h"
 
 
 #define max(a,b) ((a)>(b)?(a):(b))
@@ -13,16 +11,13 @@ Arbre_avl lire_arbre (char *nom_fichier){
   FILE *f ;
   int cle;
   Arbre_avl a = NULL;
-  
+
   f = fopen (nom_fichier, "r") ;
-
-  while (fscanf (f, "%d", &cle) != EOF)
-    {
+  while (fscanf (f, "%d", &cle) != EOF){
       a = ajouter_cle (a, cle) ;
-    }
-    
+  }
   fclose (f) ;
-
+  a = calcul_balances(a);
   return a ;
 }
 

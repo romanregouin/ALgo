@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -g -Wall -Werror
 SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
-EXE = test_abr test_file test_pile
+EXE = test_abr test_avl test_file test_pile
 
 all: $(EXE)
 
@@ -12,7 +12,7 @@ all: $(EXE)
 test_abr: test_abr.o pile.o file.o abr.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-test_avl: test_avl.o pile.o file.o abr.o
+test_avl: test_avl.o avl.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 test_pile: test_pile.o abr.o pile.o file.o
@@ -22,11 +22,11 @@ test_file: test_file.o abr.o pile.o file.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 abr.o: abr.h pile.h file.h
-avl.o: avl.h pile.h file.h
+avl.o: avl.h
 pile.o: pile.h
 file.o: file.h
 test_abr.o: abr.h
-test_avl.o: abr.h
+test_avl.o: avl.h
 test_pile.o: abr.h pile.h file.h
 test_file.o: abr.h pile.h file.h
 

@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "abr.h"
-#include "pile.h"
+#include "avl.h"
 
 int main(int argc,char** argv){
 
   printf("Test AVL :\n");
   //Test de la rotation gauche
-  Arbre_t a1,a2;
+  Arbre_avl a1,a2;
   a1=lire_arbre("avl_rot_gauche_test");
   
   afficher_arbre(a1,0);
