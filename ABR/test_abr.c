@@ -203,15 +203,12 @@ int main (int argc, char**argv)
   }
 
 
+
   if(err2>0){
     printf("Err3: Arbre3/4;  ");
     err++;
-<<<<<<< HEAD
-=======
     printf("Err2");
->>>>>>> 774e797e239976fce35db12bee493f910f2376e6
   }
-
 
 
 

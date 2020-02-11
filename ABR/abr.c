@@ -383,7 +383,7 @@ Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur,Arbre_t max)
     else return rechercher_cle_inf_arbre(a->fdroite,valeur,max); 
   }else return rechercher_cle_inf_arbre(a->fgauche,valeur,max);
 }
-
+/*
 
 Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
 {
@@ -396,7 +396,7 @@ Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
     return a;
   }else{
     if(feuille(elem)){
-      elem=NULL; //?
+      elem=NULL; 
       return a;
     }else{
       if((elem->fdroite!=NULL)&&(elem->fgauche!=NULL)){
@@ -410,6 +410,21 @@ Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
       }else if(elem->fgauche==NULL){
         elem = elem->fdroite;
       }
+    }
+  }
+  return a;
+}*/
+Arbre_t detruire_cle_arbre(Arbre_t a,int cle){
+  if(feuille(a) && a->cle==cle)return NULL;
+  else if(a->cle<cle)detruire_cle_arbre(a->fdroite,cle);
+  else if(a->cle>cle)detruire_cle_arbre(a->fgauche,cle);
+  else{
+    if(a->fdroite!=NULL){
+      a->cle=a->fdroite->cle;
+      a->fdroite=detruire_cle_arbre(a->fdroite,a->cle);
+    }else{
+      a->cle=a->fgauche->cle;
+      a->fgauche=detruire_cle_arbre(a->fgauche,a->cle);
     }
   }
   return a;
