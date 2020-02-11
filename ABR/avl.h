@@ -12,7 +12,9 @@ typedef pnoeud_avl Arbre_avl;
 
 Arbre_avl lire_arbre (char *nom_fichier) ;
 
-Arbre_avl ajouter_cle (Arbre_avl a, int cle);
+void afficher_arbre (Arbre_avl a, int niveau);
+
+Arbre_avl ajouter_cle (Arbre_avl a, int cle, Arbre_avl* min);
 
 Arbre_avl rechercher_cle_arbre (Arbre_avl a, int valeur);
 
