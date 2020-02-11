@@ -1,5 +1,7 @@
-
-#define MAX_PILE_SIZE       32
+#ifndef _PILE_H_
+#define _PILE_H_
+#include "abr.h"
+#define MAX_PILE_SIZE       64
 
 
 typedef struct {
@@ -18,3 +20,5 @@ int pile_pleine (ppile_t p) ;
 pnoeud_t depiler (ppile_t p)  ;
 
 int empiler (ppile_t p, pnoeud_t pn) ;
+
+#endif

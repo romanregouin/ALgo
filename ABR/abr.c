@@ -58,7 +58,7 @@ Arbre_t rechercher_cle_arbre (Arbre_t a, int valeur)
     }
 }
 
-Arbre_t ajouter_cle (Arbre_t a, int cle)
+Arbre_t   ajouter_cle (Arbre_t a, int cle)
 {
   Arbre_t n ;
   Arbre_t ptrouve ;
@@ -383,7 +383,7 @@ Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur,Arbre_t max)
     else return rechercher_cle_inf_arbre(a->fdroite,valeur,max); 
   }else return rechercher_cle_inf_arbre(a->fgauche,valeur,max);
 }
-
+/*
 
 Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
 {
@@ -394,8 +394,40 @@ Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
   elem = rechercher_cle_arbre(a,cle);
   if(elem==NULL){
     return a;
+  }else{
+    if(feuille(elem)){
+      elem=NULL; 
+      return a;
+    }else{
+      if((elem->fdroite!=NULL)&&(elem->fgauche!=NULL)){
+        if(elem->fgauche->fdroite!=NULL){
+          elem->fdroite = ajouter_noeud(elem->fdroite,elem->fgauche->fdroite);
+          free(elem->fgauche->fdroite);
+          elem = elem->fgauche;
+        }
+      }else if(elem->fdroite==NULL){
+        elem = elem->fgauche;
+      }else if(elem->fgauche==NULL){
+        elem = elem->fdroite;
+      }
+    }
   }
-  return NULL;
+  return a;
+}*/
+Arbre_t detruire_cle_arbre(Arbre_t a,int cle){
+  if(feuille(a) && a->cle==cle)return NULL;
+  else if(a->cle<cle)detruire_cle_arbre(a->fdroite,cle);
+  else if(a->cle>cle)detruire_cle_arbre(a->fgauche,cle);
+  else{
+    if(a->fdroite!=NULL){
+      a->cle=a->fdroite->cle;
+      a->fdroite=detruire_cle_arbre(a->fdroite,a->cle);
+    }else{
+      a->cle=a->fgauche->cle;
+      a->fgauche=detruire_cle_arbre(a->fgauche,a->cle);
+    }
+  }
+  return a;
 }
 
 
@@ -434,3 +466,53 @@ Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2)
   return res;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////                AVL               ////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int calcul_balances(Arbre_avl a){
+	int hg=-1,hd=-1;
+	if(a->fgauche!=NULL){ hg=calcul_balances(a->fgauche); }
+	if(a->fdroite!=NULL){ hd=calcul_balances(a->fdroite); }
+	if(hg==hd) { a->bal=0; }
+	else if(hg>hd) { a->bal=-1; }
+	else { a->bal=1; }
+	return (max(hg,hd)+1);
+}
+
+Arbre_avl rotation_gauche(Arbre_avl a){
+  if(a==NULL){
+    return a;
+  }
+  Arbre_avl newArbre = a->fdroite;
+  a->fdroite=newArbre->fgauche;
+  newArbre->fgauche=a;
+  calcul_balances(newArbre);
+  return newArbre;
+}
+Arbre_avl rotation_droite(Arbre_avl a){
+  if(a==NULL){
+    return a;
+  }
+  Arbre_avl newArbre = a->fgauche;
+  a->fgauche=newArbre->fdroite;
+  newArbre->fdroite=a;
+  calcul_balances(newArbre);
+  return newArbre;
+}
+
+Arbre_avl double_rotation_gauche(Arbre_avl a){
+  if(a==NULL){
+    return a;
+  }
+  a->fdroite=rotation_droite(a->fdroite);
+  return rotation_gauche(a);
+}
+
+Arbre_avl double_rotation_droite(Arbre_avl a){
+  if(a==NULL){
+    return a;
+  }
+  a->fgauche=rotation_gauche(a->fgauche);
+  return rotation_droite(a);
+}
