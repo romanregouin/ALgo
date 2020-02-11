@@ -12,16 +12,21 @@ all: $(EXE)
 test_abr: test_abr.o pile.o file.o abr.o
 	$(CC) $(CFLAGS) -o $@ $^
 
+test_avl: test_avl.o pile.o file.o abr.o
+	$(CC) $(CFLAGS) -o $@ $^
+
 test_pile: test_pile.o abr.o pile.o file.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 test_file: test_file.o abr.o pile.o file.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-abr.o:abr.h pile.h file.h
+abr.o: abr.h pile.h file.h
+avl.o: avl.h pile.h file.h
 pile.o: pile.h
 file.o: file.h
 test_abr.o: abr.h
+test_avl.o: abr.h
 test_pile.o: abr.h pile.h file.h
 test_file.o: abr.h pile.h file.h
 

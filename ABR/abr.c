@@ -466,86 +466,14 @@ Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2)
   return res;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////                AVL               ////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int calcul_balances(Arbre_avl a){
-	int hg=-1,hd=-1;
-	if(a->fgauche!=NULL){ hg=calcul_balances(a->fgauche); }
-	if(a->fdroite!=NULL){ hd=calcul_balances(a->fdroite); }
-	if(hg==hd) { a->bal=0; }
-	int diffH=hg-hd;
-	switch(diffH){
-		case 1:
-			a->bal=-1;
-			break;
-		case 2:
-			a->bal=-2;
-			break;
-		case -1:
-			a->bal=1;
-			break;
-		case -2:
-			a->bal=2;
-			break;
-		default:
-			break;
-	}
-	return (max(hg,hd)+1);
-}
-
-Arbre_avl rotation_gauche(Arbre_avl a){
-  if(a==NULL){
-    return a;
+int inclusion_arbre(Arbre_t a1, Arbre_t a2){
+  pfile_t f=creer_file();
+  enfiler(f,a1);
+  while(!file_vide(f)){
+    Arbre_t tmp=defiler(f);
+    enfiler(f,tmp->fgauche);
+    enfiler(f,tmp->fdroite);
+    if(tmp!=NULL && rechercher_cle_arbre(a2,tmp->cle)==NULL)return 0;
   }
-  Arbre_avl newArbre = a->fdroite;
-  a->fdroite=newArbre->fgauche;
-  newArbre->fgauche=a;
-  calcul_balances(newArbre);
-  return newArbre;
+  return 1;
 }
-Arbre_avl rotation_droite(Arbre_avl a){
-  if(a==NULL){
-    return a;
-  }
-  Arbre_avl newArbre = a->fgauche;
-  a->fgauche=newArbre->fdroite;
-  newArbre->fdroite=a;
-  calcul_balances(newArbre);
-  return newArbre;
-}
-
-Arbre_avl double_rotation_gauche(Arbre_avl a){
-  if(a==NULL){
-    return a;
-  }
-  a->fdroite=rotation_droite(a->fdroite);
-  return rotation_gauche(a);
-}
-
-Arbre_avl double_rotation_droite(Arbre_avl a){
-  if(a==NULL){
-    return a;
-  }
-  a->fgauche=rotation_gauche(a->fgauche);
-  return rotation_droite(a);
-}
-
-Arbre_avl equilibrer(Arbre_avl a){
-	if(a->bal == 2){
-		if(a->fdroite->bal >= 0)
-			return rotation_gauche(a);
-		else
-			return double_rotation_gauche(a);
-	} else if (a->bal == -2){
-		if (a->fgauche->bal <= 0)
-			return rotation_droite(a);
-		else
-			return double_rotation_droite(a);
-	} else
-		return a;
-}
-
-
-

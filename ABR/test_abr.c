@@ -271,6 +271,7 @@ int main (int argc, char**argv)
   }else printf("Erreur: %d erreurs dans les tests des fonctions Intersection_arbre !\n",err);
 
 
+  //CE TEST NE MARCHE QUE SI LARBRE A EST LE FICHIER arbre1.txt!!
   err=0;
   b=lire_arbre("test_delet_cle");
   afficher_arbre(a,0);
@@ -279,5 +280,11 @@ int main (int argc, char**argv)
   if(!egalite_arbre(a,b))err++;
   else succes++;
   afficher_arbre(a,0);
-  printf("\nPassé %d/13 Tests !\n",succes);
+
+  Arbre_t c=lire_arbre("arbre3");
+  if(!inclusion_arbre(a,b))err++;
+  else if (inclusion_arbre(a,c))err++;
+  else succes++;
+  printf("\nPassé %d/14 Tests !\n",succes);
+  //TEST DES AVLS
 }
