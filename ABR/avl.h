@@ -24,4 +24,6 @@ Arbre_avl double_rotation_gauche(Arbre_avl a);
 
 Arbre_avl double_rotation_droite(Arbre_avl a);
 
+Arbre_avl equilibrer(Arbre_avl a);
+
 #endif
