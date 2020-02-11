@@ -475,8 +475,23 @@ int calcul_balances(Arbre_avl a){
 	if(a->fgauche!=NULL){ hg=calcul_balances(a->fgauche); }
 	if(a->fdroite!=NULL){ hd=calcul_balances(a->fdroite); }
 	if(hg==hd) { a->bal=0; }
-	else if(hg>hd) { a->bal=-1; }
-	else { a->bal=1; }
+	int diffH=hg-hd;
+	switch(diffH){
+		case 1:
+			a->bal=-1;
+			break;
+		case 2:
+			a->bal=-2;
+			break;
+		case -1:
+			a->bal=1;
+			break;
+		case -2:
+			a->bal=2;
+			break;
+		default:
+			break;
+	}
 	return (max(hg,hd)+1);
 }
 
@@ -516,3 +531,21 @@ Arbre_avl double_rotation_droite(Arbre_avl a){
   a->fgauche=rotation_gauche(a->fgauche);
   return rotation_droite(a);
 }
+
+Arbre_avl equilibrer(Arbre_avl a){
+	if(a->bal == 2){
+		if(a->fdroite->bal >= 0)
+			return rotation_gauche(a);
+		else
+			return double_rotation_gauche(a);
+	} else if (a->bal == -2){
+		if (a->fgauche->bal <= 0)
+			return rotation_droite(a);
+		else
+			return double_rotation_droite(a);
+	} else
+		return a;
+}
+
+
+
