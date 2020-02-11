@@ -9,18 +9,9 @@ typedef struct n {
   struct n *fgauche, *fdroite;
 } noeud_t, *pnoeud_t ;
 
-typedef struct avl {
-  int cle;
-  int h;
-  int bal;
-  struct avl *fgauche, *fdroite;
-} noeud_avl, *pnoeud_avl;
-
 /* type Arbre, pointeur vers un noeud */
 
 typedef pnoeud_t Arbre_t;
-
-typedef pnoeud_avl Arbre_avl;
 
 Arbre_t lire_arbre (char *nom_fichier) ;
 
@@ -67,19 +58,5 @@ Arbre_t intersection_deux_arbres (Arbre_t a1, Arbre_t a2) ;
 Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2) ;
 
 int inclusion_arbre(Arbre_t a1, Arbre_t a2) ;
-
-//ALV
-
-int calcul_balances(Arbre_avl a);
-
-Arbre_avl rotation_gauche(Arbre_avl a);
-
-Arbre_avl rotation_droite(Arbre_avl a);
-
-Arbre_avl double_rotation_gauche(Arbre_avl a);
-
-Arbre_avl double_rotation_droite(Arbre_avl a);
-
-
 
 #endif
