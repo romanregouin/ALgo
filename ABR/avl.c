@@ -11,15 +11,33 @@ Arbre_avl lire_arbre (char *nom_fichier){
   FILE *f ;
   int cle;
   Arbre_avl a = NULL;
+  Arbre_avl* min = malloc(sizeof(Arbre_avl));
 
   f = fopen (nom_fichier, "r") ;
   while (fscanf (f, "%d", &cle) != EOF){
-      a = ajouter_cle (a, cle) ;
+      a = ajouter_cle (a, cle,min) ;
   }
   fclose (f) ;
   calcul_balances(a);
   return a ;
 }
+
+void afficher_arbre (Arbre_avl a, int niveau){
+  int i ;
+  
+  if (a != NULL)
+      {
+	afficher_arbre (a->fdroite,niveau+1) ;
+	
+	for (i = 0; i < niveau; i++)
+	  printf ("\t") ;
+	printf (" %d (%d)\n\n", a->cle, niveau) ;
+
+	afficher_arbre (a->fgauche, niveau+1) ;
+      }
+  return ;
+}
+
 
 int calcul_balances(Arbre_avl a){
 	int hg=-1,hd=-1;
