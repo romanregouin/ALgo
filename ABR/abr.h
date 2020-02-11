@@ -66,6 +66,8 @@ Arbre_t intersection_deux_arbres (Arbre_t a1, Arbre_t a2) ;
 
 Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2) ;
 
+int inclusion_arbre(Arbre_t a1, Arbre_t a2) ;
+
 //ALV
 
 int calcul_balances(Arbre_avl a);

@@ -279,5 +279,10 @@ int main (int argc, char**argv)
   if(!egalite_arbre(a,b))err++;
   else succes++;
   afficher_arbre(a,0);
-  printf("\nPassé %d/13 Tests !\n",succes);
+
+  Arbre_t c=lire_arbre("arbre3");
+  if(!inclusion_arbre(a,b))err++;
+  else if (inclusion_arbre(a,c))err++;
+  else succes++;
+  printf("\nPassé %d/14 Tests !\n",succes);
 }
