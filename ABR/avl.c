@@ -102,3 +102,34 @@ Arbre_avl equilibrer(Arbre_avl a){
 	} else
 		return a;
 }
+
+
+
+Arbre_avl ajouter_cle(Arbre_avl a,int val,Arbre_avl* min){
+  if(a==NULL)return NULL;
+  if(a->cle==val)return a;
+  Arbre_avl res;
+  int tmp;
+  if(a->cle<val){
+    tmp=a->fgauche->bal;
+    if(a->bal<0){
+      *min=a;
+      res=ajouter_cle(a->fgauche,val,min);
+    }
+    else res=ajouter_cle(a->fgauche,val,min);
+    if(*min==a && res->bal!=0){
+      if(res->bal==1)rotation_gauche(a);
+      if(res->bal==-1)double_rotation_gauche(a);
+    }
+  }else{
+    if(a->bal>0){
+      *min=a;
+      res=ajouter_cle(a->fdroite,val,min);
+    }
+    else res=ajouter_cle(a->fdroite,val,min);
+    if(*min==a && res->bal!=0){
+      if(res->bal==1)rotation_droite(a);
+      if(res->bal==-1)double_rotation_droite(a);
+    }
+  }
+}
