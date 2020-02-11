@@ -14,7 +14,7 @@ Arbre_avl lire_arbre (char *nom_fichier){
 
   f = fopen (nom_fichier, "r") ;
   while (fscanf (f, "%d", &cle) != EOF){
-      a = ajouter_cle (a, cle) ;
+      a = ajouter_cle (a, cle,NULL) ;
   }
   fclose (f) ;
   a = calcul_balances(a);
