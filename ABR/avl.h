@@ -12,9 +12,9 @@ typedef pnoeud_avl Arbre_avl;
 
 Arbre_avl lire_arbre (char *nom_fichier) ;
 
-void afficher_arbre (Arbre_avl a, int niveau);
+Arbre_avl ajouter_noeud (Arbre_avl a, Arbre_avl n, Arbre_avl des);
 
-Arbre_avl ajouter_cle (Arbre_avl a, int cle, Arbre_avl* min);
+Arbre_avl ajouter_cle (Arbre_avl a, int cle);
 
 Arbre_avl rechercher_cle_arbre (Arbre_avl a, int valeur);
 
@@ -32,4 +32,5 @@ Arbre_avl double_rotation_droite(Arbre_avl a);
 
 Arbre_avl equilibrer(Arbre_avl a);
 
+Arbre_avl ajouter_cle2 (Arbre_avl a, int cle,Arbre_avl* min);
 #endif
