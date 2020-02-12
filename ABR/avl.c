@@ -41,6 +41,7 @@ void afficher_arbre (Arbre_avl a, int niveau){
 
 int calcul_balances(Arbre_avl a){
 	int hg=-1,hd=-1;
+  if(a==NULL)return 0;
 	if(a->fgauche!=NULL){ hg=calcul_balances(a->fgauche); }
 	if(a->fdroite!=NULL){ hd=calcul_balances(a->fdroite); }
 	if(hg==hd) { a->bal=0; }
@@ -119,7 +120,7 @@ Arbre_avl equilibrer(Arbre_avl a){
 
 
 Arbre_avl ajouter_cle(Arbre_avl a,int val,Arbre_avl* min){
-  if(a==NULL)return NULL;
+  if(a==NULL)return a;
   if(a->cle==val)return a;
   Arbre_avl res;
   if(a->cle<val){
@@ -128,6 +129,7 @@ Arbre_avl ajouter_cle(Arbre_avl a,int val,Arbre_avl* min){
       res=ajouter_cle(a->fgauche,val,min);
     }
     else res=ajouter_cle(a->fgauche,val,min);
+    if(res==NULL)ajouter_noeud(); //ajouter le noeud
     if(*min==a && res->bal!=0){
       if(res->bal==1)rotation_gauche(a);
       if(res->bal==-1)double_rotation_gauche(a);
@@ -138,6 +140,7 @@ Arbre_avl ajouter_cle(Arbre_avl a,int val,Arbre_avl* min){
       res=ajouter_cle(a->fdroite,val,min);
     }
     else res=ajouter_cle(a->fdroite,val,min);
+    if(res==NULL)ajouter_noeud(); //ajouter le noeud
     if(*min==a && res->bal!=0){
       if(res->bal==1)rotation_droite(a);
       if(res->bal==-1)double_rotation_droite(a);
@@ -145,3 +148,36 @@ Arbre_avl ajouter_cle(Arbre_avl a,int val,Arbre_avl* min){
   }
   return res;
 }
+
+
+/*
+Arbre_avl ajouter_cle2(Arbre_avl a,int val,Arbre_avl* min){
+  if(a==NULL)return a;
+  if(a->cle==val)return a;
+  Arbre_avl res;
+  if(a->cle<val){
+    if(a->bal<0){
+      *min=a;
+      res=ajouter_cle(a->fgauche,val,min);
+    }
+    else res=ajouter_cle(a->fgauche,val,min);
+    if(res==NULL)ajouter_noeud(); //ajouter le noeud
+    if(*min==a && res->bal!=0){
+      if(res->bal==1)rotation_gauche(a);
+      if(res->bal==-1)double_rotation_gauche(a);
+    }
+  }else{
+    if(a->bal>0){
+      *min=a;
+      res=ajouter_cle(a->fdroite,val,min);
+    }
+    else res=ajouter_cle(a->fdroite,val,min);
+    if(res==NULL)ajouter_noeud(); //ajouter le noeud
+    if(*min==a && res->bal!=0){
+      if(res->bal==1)rotation_droite(a);
+      if(res->bal==-1)double_rotation_droite(a);
+    }
+  }
+  return res;
+}
+*/
