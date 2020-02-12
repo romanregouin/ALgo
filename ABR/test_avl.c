@@ -13,4 +13,5 @@ int main(int argc,char** argv){
   printf("----------------------------------------------------------------\n");
   a2=lire_arbre("avl_rot_gauche_res");
   afficher_arbre(a2,0);
+  
 }

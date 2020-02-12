@@ -12,7 +12,7 @@ typedef pnoeud_avl Arbre_avl;
 
 Arbre_avl lire_arbre (char *nom_fichier) ;
 
-Arbre_avl ajouter_noeud (Arbre_avl a, Arbre_avl n, Arbre_avl des);
+Arbre_avl ajouter_noeud (Arbre_avl a, Arbre_avl n, Arbre_avl* des);
 
 Arbre_avl ajouter_cle (Arbre_avl a, int cle);
 

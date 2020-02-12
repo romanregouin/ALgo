@@ -31,7 +31,7 @@ void afficher_arbre (Arbre_avl a, int niveau){
 	
 	for (i = 0; i < niveau; i++)
 	  printf ("\t") ;
-	printf (" %d (%d)\n\n", a->cle, niveau) ;
+	printf (" %d (%d)(%d)\n\n", a->cle,a->bal, niveau) ;
 
 	afficher_arbre (a->fgauche, niveau+1) ;
       }
@@ -138,14 +138,14 @@ Arbre_avl rechercher_cle_arbre (Arbre_avl a, int valeur)
     }
 }
 
-Arbre_avl ajouter_noeud (Arbre_avl a, Arbre_avl n, Arbre_avl des)
+Arbre_avl ajouter_noeud (Arbre_avl a, Arbre_avl n, Arbre_avl* des)
 {
   /* ajouter le noeud n dans l'arbre a */
   
   if (a == NULL)
     return n ;
   else {
-	if (a->bal!=0) {des = a;}
+	if (a->bal!=0) {*des = a;}
 	if (n->cle < a->cle){
 		a->fgauche = ajouter_noeud (a->fgauche, n, des) ;
 	}else{
@@ -177,10 +177,24 @@ Arbre_avl   ajouter_cle (Arbre_avl a, int cle)
       n->fgauche = NULL ;
       n->fdroite = NULL ;
 
-      a = ajouter_noeud (a, n, desequilibre) ;
+      a = ajouter_noeud (a, n, &desequilibre) ;
       calcul_balances(a);
-      equilibrer(desequilibre);
-      calcul_balances(a);
+      if (desequilibre!=NULL){
+		  if(desequilibre==a){
+			  a=equilibrer(desequilibre);
+			  calcul_balances(a);
+			  return a;
+		  }
+		  Arbre_avl tmp=a;
+		  while(tmp->fdroite != desequilibre && tmp->fgauche!=desequilibre){
+			  if (desequilibre->cle > tmp->cle){ tmp = tmp->fdroite;}
+			  else{tmp=tmp->fgauche;}
+		  }
+		  if (tmp->fdroite == desequilibre){ tmp->fdroite=equilibrer(tmp->fdroite);}
+		  else{ tmp->fgauche=equilibrer(tmp->fgauche);}
+		  calcul_balances(a);
+		  return a;		
+	  }
       return a ;
     }
   else
