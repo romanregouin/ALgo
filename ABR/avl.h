@@ -37,4 +37,10 @@ Arbre_avl double_rotation_droite(Arbre_avl a);
 Arbre_avl equilibrer(Arbre_avl a);
 
 Arbre_avl ajouter_cle2 (Arbre_avl a, int cle,Arbre_avl* min);
+
+
+Arbre_avl detruire_cle_arbre(Arbre_avl a,int cle);
+
+Arbre_avl detruire_cle_arbre_r(Arbre_avl a,int cle);
+
 #endif

@@ -266,3 +266,46 @@ Arbre_avl ajouter_cle2(Arbre_avl a,int val,Arbre_avl* min){
   }
   return a; // on retourne le noeud actuel avec les chainages modifié ou non 
 }
+
+
+Arbre_avl detruire_cle_arbre(Arbre_avl a,int cle){
+  a=detruire_cle_arbre_r(a,cle);
+  a=equilibrer(a);
+  return a;
+}
+
+Arbre_avl detruire_cle_arbre_r(Arbre_avl a,int cle){
+  int tmp=-3;
+  if(feuille(a) && a->cle==cle)return NULL;
+  else if(a->cle<cle){
+    if(a->fdroite!=NULL)tmp=a->fdroite->bal;
+    a->fdroite=detruire_cle_arbre_r(a->fdroite,cle);
+    if(tmp!=-3){
+      if(a->fdroite==NULL)a->bal--;
+      else if(tmp!=0 && a->fdroite->bal==0)a->bal--;
+    }
+  }else if(a->cle>cle){
+    if(a->fgauche!=NULL)tmp=a->fgauche->bal;
+    a->fgauche=detruire_cle_arbre_r(a->fgauche,cle);
+    if(tmp!=-3){
+      if(a->fgauche==NULL)a->bal++;
+      else if(tmp!=0 && a->fgauche->bal==0)a->bal++;
+    }
+  }
+  else{
+    if(a->fdroite!=NULL){
+      tmp=a->fdroite->bal;
+      a->cle=a->fdroite->cle;
+      a->fdroite=detruire_cle_arbre_r(a->fdroite,a->cle);
+      if(a->fdroite==NULL)a->bal--;
+      else if(tmp!=0 && a->fdroite->bal==0)a->bal--;
+    }else{
+      tmp=a->fgauche->bal;
+      a->cle=a->fgauche->cle;
+      a->fgauche=detruire_cle_arbre_r(a->fgauche,a->cle);
+      if(a->fgauche==NULL)a->bal++;
+      else if(tmp!=0 && a->fgauche->bal==0)a->bal++;
+    }
+  }
+  return a;
+}

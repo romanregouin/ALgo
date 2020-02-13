@@ -416,8 +416,8 @@ Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
 }*/
 Arbre_t detruire_cle_arbre(Arbre_t a,int cle){
   if(feuille(a) && a->cle==cle)return NULL;
-  else if(a->cle<cle)detruire_cle_arbre(a->fdroite,cle);
-  else if(a->cle>cle)detruire_cle_arbre(a->fgauche,cle);
+  else if(a->cle<cle)a->fdroite=detruire_cle_arbre(a->fdroite,cle);
+  else if(a->cle>cle)a->fgauche=detruire_cle_arbre(a->fgauche,cle);
   else{
     if(a->fdroite!=NULL){
       a->cle=a->fdroite->cle;

@@ -13,5 +13,13 @@ int main(int argc,char** argv){
   printf("----------------------------------------------------------------\n");
   a2=lire_arbre("avl_rot_gauche_res");
   afficher_arbre(a2,0);
-  
+  printf("----------------------------------------------------------------\n");
+  a1=detruire_cle_arbre(a1,15);
+  afficher_arbre(a1,0);
+  printf("----------------------------------------------------------------\n");
+  a1=detruire_cle_arbre(a1,12);
+  afficher_arbre(a1,0);
+  printf("----------------------------------------------------------------\n");
+  a1=detruire_cle_arbre(a1,11);
+  afficher_arbre(a1,0);
 }
