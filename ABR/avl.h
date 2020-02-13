@@ -10,6 +10,10 @@ typedef struct avl {
 
 typedef pnoeud_avl Arbre_avl;
 
+
+
+
+int feuille (Arbre_avl a);
 Arbre_avl lire_arbre (char *nom_fichier) ;
 
 Arbre_avl ajouter_noeud (Arbre_avl a, Arbre_avl n, Arbre_avl* des);

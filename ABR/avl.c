@@ -7,15 +7,34 @@
 
 #define max(a,b) ((a)>(b)?(a):(b))
 
+
+
+int feuille (Arbre_avl a)
+{
+  if (a == NULL)
+    return 0 ;
+  else
+    {
+      if ((a->fgauche == NULL) && (a->fdroite == NULL))
+	return 1 ;
+      else
+	return 0 ;
+    }
+}
+
+
+
 Arbre_avl lire_arbre (char *nom_fichier){
   FILE *f ;
   int cle;
   Arbre_avl a = NULL;
- // Arbre_avl* min = malloc(sizeof(Arbre_avl));
+  //Arbre_avl* min = malloc(sizeof(Arbre_avl)); //Version Liam
 
   f = fopen (nom_fichier, "r") ;
   while (fscanf (f, "%d", &cle) != EOF){
-      a=ajouter_cle (a, cle) ;
+    //*min=NULL;                    //Version Liam
+    //a=ajouter_cle2 (a, cle,min) ; //Version Liam
+    a=ajouter_cle (a, cle) ;    //Version Sophie
   }
   fclose (f) ;
   calcul_balances(a);
@@ -204,45 +223,46 @@ Arbre_avl   ajouter_cle (Arbre_avl a, int cle)
 
 
 Arbre_avl ajouter_cle2(Arbre_avl a,int val,Arbre_avl* min){
-  if(a==NULL)return a;
-  if(a->cle==val)return a;
+  int tmp=-3;  // la variable tmp sert a garder une trace de l'ancienne balance du fgauche ou fdroite -3 si le fils est null (-3 choisie arbritrairement)
+  if(a==NULL){
+      Arbre_avl new=malloc(sizeof(noeud_avl));  // cette partie correspond a la création du nouveau noeud
+      new->cle=val;
+      new->bal=0;
+      new->h=0;
+      new->fdroite=NULL;
+      new->fgauche=NULL;
+      return new;
+  };
+  if(a->cle==val)return a;  // si le noeud(cle) existe deja on s'arrete la
   Arbre_avl res;
-  if(a->cle<val){
-    if(a->bal<0){
-      *min=a;
-      res=ajouter_cle2(a->fgauche,val,min);
+  if(a->cle>val){                      // sinon on recherche a droite ou a gauche selon la valeur
+    if(a->fgauche!=NULL)tmp=a->fgauche->bal;       // c'est ici qu'on assigne la valeur de l'ancienne balance
+    if(a->bal<0)*min=a;             // ici on garde a l'aide d'un pointeur d'arbre le dernier arbre qui penche du coté ou on cherche 
+    res=ajouter_cle2(a->fgauche,val,min);  // on recupere le resultat de l'ajout clef recursif 
+    a->fgauche=res;                       // on l'ajoute en tant que nouveau filsgauche (si il y a eut une rotation cela permet de refaire le bon chainage)
+    if(feuille(res) && res->cle==val){    // on vérifie s'il s'agit d'un fils et plus précisement d'un nouveau fils
+      res->h=a->h+1;        // si c'est le cas on incremente ça hauteur selon celle précédente +1
+      a->bal--;             // on ajuste la balance du noeud actuel
     }
-    else res=ajouter_cle2(a->fgauche,val,min);
-    if(res==NULL){
-      Arbre_avl new=malloc(sizeof(noeud_avl));
-      new->cle=val;
-      new->bal=0;
-      new->fdroite=NULL;
-      new->fgauche=NULL;
-      a->fgauche=new;
-    };
+    if(*min==a && res->bal!=0){   // c'est ici que l'on vérifie si l'on doit faire une rotation ou non
+      if(res->bal==-1)a=rotation_droite(a);  // Une rotation s'opere lorsque a= valeur pointé par le min (min etant le meme partout car pointeur)
+      if(res->bal==1)a=double_rotation_droite(a); //si on se trouve au min et que la balance de son fils d/g et différent de 0 alors on doit faire une rotation (car sinon le min serait le fils du noeud actuel car balance !=0)
+    } // si le fils balance a a l'opposé du noeud actuel alors on fait une double rotation sinon rotation simple
+    if(tmp!=-3 && tmp!=res->bal && res->bal!=0)a->bal--; // Enfin si tmp(val ancienne bal) a changé alors on doit ajuster la balance actuel en remontant l'arbre
+  }else{ // On fait de meme pour le fils droit si oncherche a droite
+    if(a->fdroite!=NULL)tmp=a->fdroite->bal;     // c'est ici qu'on assigne la valeur de l'ancienne balance
+    if(a->bal>0)*min=a;         // ici on garde a l'aide d'un pointeur d'arbre le dernier arbre qui penche du coté ou on cherche 
+    res=ajouter_cle2(a->fdroite,val,min);
+    a->fdroite=res;
+    if(feuille(res) && res->cle==val){
+      res->h=a->h+1;
+      a->bal++;
+    }
     if(*min==a && res->bal!=0){
-      if(res->bal==1)rotation_gauche(a);
-      if(res->bal==-1)double_rotation_gauche(a);
+      if(res->bal==1)a=rotation_gauche(a);
+      if(res->bal==-1)a=double_rotation_gauche(a);
     }
-  }else{
-    if(a->bal>0){
-      *min=a;
-      res=ajouter_cle2(a->fdroite,val,min);
-    }
-    else res=ajouter_cle2(a->fdroite,val,min);
-    if(res==NULL){
-      Arbre_avl new=malloc(sizeof(noeud_avl));
-      new->cle=val;
-      new->bal=0;
-      new->fdroite=NULL;
-      new->fgauche=NULL;
-      a->fdroite=new;
-    };
-    if(*min==a && res->bal!=0){
-      if(res->bal==1)rotation_droite(a);
-      if(res->bal==-1)double_rotation_droite(a);
-    }
+    if(tmp!=-3 && tmp!=res->bal && res->bal!=0)a->bal++;
   }
-  return res;
+  return a; // on retourne le noeud actuel avec les chainages modifié ou non 
 }
