@@ -182,7 +182,7 @@ Arbre_avl   ajouter_cle (Arbre_avl a, int cle)
   Arbre_avl desequilibre=NULL;
   
   /* 
-     ajout de la clé. Creation du noeud n qu'on insere 
+    ajout de la clé. Creation du noeud n qu'on insere 
     dans l'arbre a
   */
 
@@ -308,4 +308,101 @@ Arbre_avl detruire_cle_arbre_r(Arbre_avl a,int cle){
     }
   }
   return a;
+}
+
+
+//Toutes les fonctions suivante servent pour la destruction (version Sophie)
+Arbre_avl detruire_cle_arbre2(Arbre_avl a,int cle){
+  if(a==NULL) { return NULL; }
+  Arbre_avl sa = rechercher_cle_arbre(a,cle); //on recupère l'arbre dont le noeud à supprimer est la racine
+  Arbre_avl suppr = sa; //variable pour réutiliser ce noeud plus tard
+  if(sa!=NULL){ //on va chercher à supprimer le noeud sa de son arbre (=supprimer la racine de sa)
+	  if (feuille(sa)){sa = NULL;} //si sa est une feuille le nouvel arbre est vide
+	  else{ 
+		sa = detruire_racine(sa); //sinon on supprime la racine
+		calcul_balances(sa);
+		sa = equilibrer(sa); //on équilibre le nouvel arbre
+	  }
+	  if(a->cle==cle){a=sa;} //si le noeud à supprimer etait la racine de a le nouvel arbre a est directement donné par sa
+	  else{ //sinon on parcourt l'arbre a pour raccrocher le sous-arbre sa au bon endroit
+		  Arbre_avl tmp=a;
+		  while(tmp->fdroite != suppr && tmp->fgauche!=suppr){
+			  if (cle > tmp->cle){ tmp = tmp->fdroite;}
+			  else{tmp=tmp->fgauche;}
+		  }
+		  if (tmp->fdroite != NULL && tmp->fdroite->cle == cle){ tmp->fdroite=sa;}
+		  else{tmp->fgauche=sa;}
+		  calcul_balances(tmp);
+		  
+		  // au besoin on réequilibre le noeud auquel on a accroché sa
+		  Arbre_avl tmp2 = pere(a,tmp);
+		  if(tmp2!=NULL){
+			if (tmp->cle<tmp2->cle){tmp2->fgauche = equilibrer(tmp2->fgauche);}
+			else{tmp2->fdroite = equilibrer(tmp2->fdroite);}
+		  } else { a=tmp;}
+	  }
+	  calcul_balances(a);
+	  return equilibrer(a); //enfin au réequilibre a si besoin
+  }
+  return a;
+}
+
+//fonction détruisant la racine de l'arbre passé en paramètre
+Arbre_avl detruire_racine(Arbre_avl a){
+	if (a->fdroite==NULL) //si la racine n'a pas de fils droit il suffit de renvoyer le fils gauche
+	  return a->fgauche;
+	else if(a->fgauche==NULL)
+		return a->fdroite;
+	else if(feuille(a->fgauche)){ //si le fils gauche de la racine est une feuille on le transforme en nouvelle racine en lui accrochant le fils droit de l'ancienne racine
+		a->fgauche->fdroite=a->fdroite;
+		return a->fgauche;
+	}
+	else { //sinon on va parcourir l'arbre récursivement pour trouver la nouvelle racine et construire le nouvel arbre
+		a->fgauche = echanger_max_r(a->fgauche,&a);
+		return a;
+	}
+  
+}
+
+//supprime la racine de l'arbre "pere" en mettant comme nouvelle racine 
+//le noeud de clé directement inférieure à celle de la racine d'origine.
+//fonction récursive, réequilibrant l'arbre petit à petit si besoin
+Arbre_avl echanger_max_r(Arbre_avl a,Arbre_avl* pere){
+	if(a->fdroite==NULL){
+		//si la clé directement inférieure à la racine est sur un noeud n possédant un fils gauche,
+		//la nouvelle racine devient ce noeud n et son fils prend l'ancienne place de n dans l'arbre
+		Arbre_avl tmp = a->fgauche;
+		a->fdroite = (*pere)->fdroite;
+		a->fgauche = (*pere)->fgauche;
+		*pere = a->fdroite;
+		return tmp;
+	}
+	else if (feuille(a->fdroite)){
+		//si la clé directement inférieure à la racine est une feuille, 
+		//il suffit de les échanger et de supprimer la "nouvelle" feuille 
+		a->fdroite->fdroite = (*pere)->fdroite;
+		a->fdroite->fgauche = (*pere)->fgauche;
+		*pere = a->fdroite;
+		a->fdroite=NULL;
+		calcul_balances(a);
+		return equilibrer(a);
+	} else {
+		//si on a pas atteint la clé la plus proche de la racine on continue à chercher sur le sous-arbre droit suivant
+		a->fdroite = echanger_max_r(a->fdroite,pere);
+		calcul_balances(a);
+		return equilibrer(a);
+	}
+}
+
+// fonction renvoyant le père du noeud "fils", les 2 faisant partie de l'arbre a
+Arbre_avl pere(Arbre_avl a, Arbre_avl fils){
+	if (a==NULL) return NULL;
+	if (a==fils) return NULL;
+	if (rechercher_cle_arbre(a,fils->cle)==NULL) return NULL;
+	Arbre_avl tmp=a;
+	while(tmp->fdroite != fils && tmp->fgauche!=fils){
+		if (fils->cle > tmp->cle){ tmp = tmp->fdroite;}
+		else{tmp=tmp->fgauche;}
+	}
+	return tmp;
 }

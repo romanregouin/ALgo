@@ -43,4 +43,13 @@ Arbre_avl detruire_cle_arbre(Arbre_avl a,int cle);
 
 Arbre_avl detruire_cle_arbre_r(Arbre_avl a,int cle);
 
+//Toutes les fonctions suivante servent pour la destruction (version Sophie)
+Arbre_avl detruire_cle_arbre2(Arbre_avl a,int cle);
+
+Arbre_avl detruire_racine(Arbre_avl a);
+
+Arbre_avl echanger_max_r(Arbre_avl a,Arbre_avl* pere);
+
+Arbre_avl pere(Arbre_avl a, Arbre_avl fils);
+
 #endif
