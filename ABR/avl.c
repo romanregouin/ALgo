@@ -270,11 +270,13 @@ Arbre_avl ajouter_cle2(Arbre_avl a,int val,Arbre_avl* min){
 
 Arbre_avl detruire_cle_arbre(Arbre_avl a,int cle){
   a=detruire_cle_arbre_r(a,cle);
+  calcul_balances(a);
   a=equilibrer(a);
   return a;
 }
-
+/*
 Arbre_avl detruire_cle_arbre_r(Arbre_avl a,int cle){
+  if(a==NULL)return NULL;
   int tmp=-3;
   if(feuille(a) && a->cle==cle)return NULL;
   else if(a->cle<cle){
@@ -308,7 +310,54 @@ Arbre_avl detruire_cle_arbre_r(Arbre_avl a,int cle){
     }
   }
   return a;
+}*/
+
+
+Arbre_avl detruire_cle_arbre_r(Arbre_avl a,int cle){
+  if(a==NULL)return NULL;
+  if(feuille(a) && a->cle==cle)return NULL;
+  else if(a->cle<cle)a->fdroite=detruire_cle_arbre(a->fdroite,cle);
+  else if(a->cle>cle)a->fgauche=detruire_cle_arbre(a->fgauche,cle);
+  else{
+    Arbre_avl tmp;
+    if(a->fdroite!=NULL){
+      tmp=a->fdroite;
+      if(tmp->fgauche==NULL){
+        a->cle=tmp->cle;
+        a->fdroite=detruire_cle_arbre(a->fdroite,a->cle);
+      }else{
+        while(tmp->fgauche->fgauche!=NULL)tmp=tmp->fgauche;
+        a->cle=tmp->fgauche->cle;
+        if(tmp->fgauche->fdroite==NULL)tmp->fgauche=NULL;
+        else {
+          //tmp->fgauche->cle=tmp->fgauche->fdroite->cle;
+          tmp->fgauche=detruire_cle_arbre(tmp->fgauche,tmp->fgauche->cle);
+        }
+      }
+    }else{
+      tmp=a->fgauche;
+      if(tmp->fdroite==NULL){
+        a->cle=tmp->cle;
+        a->fgauche=detruire_cle_arbre(a->fgauche,a->cle);
+      }else{
+        while(tmp->fdroite->fdroite!=NULL)tmp=tmp->fdroite;
+        a->cle=tmp->fdroite->cle;
+        if(tmp->fdroite->fgauche==NULL)tmp->fdroite=NULL;
+        else {
+          //tmp->fdroite->cle=tmp->fdroite->fgauche->cle;
+          tmp->fdroite=detruire_cle_arbre(tmp->fdroite,tmp->fdroite->cle);
+        }
+      }
+    }
+  }
+  return a;
 }
+
+
+
+
+
+
 
 
 //Toutes les fonctions suivante servent pour la destruction (version Sophie)
