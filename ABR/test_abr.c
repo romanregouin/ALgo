@@ -9,7 +9,7 @@ int egalite_arbre(Arbre_t a1, Arbre_t a2){
   if(a1==NULL && a2==NULL)return 1;
   else if(a1==NULL || a2==NULL)return 0;
   if(a1->cle!=a2->cle)return 0;
-  return egalite_arbre(a1->fgauche,a2->fgauche)== egalite_arbre(a1->fdroite,a2->fdroite);
+  return egalite_arbre(a1->fgauche,a2->fgauche) && egalite_arbre(a1->fdroite,a2->fdroite);
 }
 
 
@@ -19,11 +19,6 @@ int main (int argc, char**argv)
 {
   Arbre_t a ;
 
-  if (argc != 2)
-    {
-      fprintf (stderr, "il manque le parametre nom de fichier\n") ;
-      exit (-1) ;
-    }
 
   a = lire_arbre ("arbre1") ;
   
@@ -271,20 +266,32 @@ int main (int argc, char**argv)
   }else printf("Erreur: %d erreurs dans les tests des fonctions Intersection_arbre !\n",err);
 
 
-  //CE TEST NE MARCHE QUE SI LARBRE A EST LE FICHIER arbre1.txt!!
+
+
+
+
   err=0;
   b=lire_arbre("test_delet_cle");
   afficher_arbre(a,0);
   afficher_arbre(b,0);
   a=detruire_cle_arbre(a,8);
-  if(!egalite_arbre(a,b))err++;
-  else succes++;
   afficher_arbre(a,0);
-
+  if(!inclusion_arbre(a,b) || !inclusion_arbre(b,a))err++;
+  printf("----\n");
+  if(err==0) {
+    succes++;
+    printf("Succes fonction Supression_cle !\n");
+  }
+  //afficher_arbre(a,0);
+  err=0;
   Arbre_t c=lire_arbre("arbre3");
   if(!inclusion_arbre(a,b))err++;
   else if (inclusion_arbre(a,c))err++;
-  else succes++;
+  else {
+    succes++;
+    printf("Succes fonction Inclusion_arbre !\n");
+  }
+
   printf("\nPassé %d/14 Tests !\n",succes);
-  //TEST DES AVLS
+
 }

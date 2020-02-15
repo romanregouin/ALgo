@@ -383,48 +383,44 @@ Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur,Arbre_t max)
     else return rechercher_cle_inf_arbre(a->fdroite,valeur,max); 
   }else return rechercher_cle_inf_arbre(a->fgauche,valeur,max);
 }
-/*
 
-Arbre_t detruire_cle_arbre (Arbre_t a, int cle)
-{
-  Arbre_t elem;
-  if(a==NULL){
-    return NULL;
-  }
-  elem = rechercher_cle_arbre(a,cle);
-  if(elem==NULL){
-    return a;
-  }else{
-    if(feuille(elem)){
-      elem=NULL; 
-      return a;
-    }else{
-      if((elem->fdroite!=NULL)&&(elem->fgauche!=NULL)){
-        if(elem->fgauche->fdroite!=NULL){
-          elem->fdroite = ajouter_noeud(elem->fdroite,elem->fgauche->fdroite);
-          free(elem->fgauche->fdroite);
-          elem = elem->fgauche;
-        }
-      }else if(elem->fdroite==NULL){
-        elem = elem->fgauche;
-      }else if(elem->fgauche==NULL){
-        elem = elem->fdroite;
-      }
-    }
-  }
-  return a;
-}*/
+
+
 Arbre_t detruire_cle_arbre(Arbre_t a,int cle){
+  if(a==NULL)return NULL;
   if(feuille(a) && a->cle==cle)return NULL;
   else if(a->cle<cle)a->fdroite=detruire_cle_arbre(a->fdroite,cle);
   else if(a->cle>cle)a->fgauche=detruire_cle_arbre(a->fgauche,cle);
   else{
+    Arbre_t tmp;
     if(a->fdroite!=NULL){
-      a->cle=a->fdroite->cle;
-      a->fdroite=detruire_cle_arbre(a->fdroite,a->cle);
+      tmp=a->fdroite;
+      if(tmp->fgauche==NULL){
+        a->cle=tmp->cle;
+        a->fdroite=detruire_cle_arbre(a->fdroite,a->cle);
+      }else{
+        while(tmp->fgauche->fgauche!=NULL)tmp=tmp->fgauche;
+        a->cle=tmp->fgauche->cle;
+        if(tmp->fgauche->fdroite==NULL)tmp->fgauche=NULL;
+        else {
+          //tmp->fgauche->cle=tmp->fgauche->fdroite->cle;
+          tmp->fgauche=detruire_cle_arbre(tmp->fgauche,tmp->fgauche->cle);
+        }
+      }
     }else{
-      a->cle=a->fgauche->cle;
-      a->fgauche=detruire_cle_arbre(a->fgauche,a->cle);
+      tmp=a->fgauche;
+      if(tmp->fdroite==NULL){
+        a->cle=tmp->cle;
+        a->fgauche=detruire_cle_arbre(a->fgauche,a->cle);
+      }else{
+        while(tmp->fdroite->fdroite!=NULL)tmp=tmp->fdroite;
+        a->cle=tmp->fdroite->cle;
+        if(tmp->fdroite->fgauche==NULL)tmp->fdroite=NULL;
+        else {
+          //tmp->fdroite->cle=tmp->fdroite->fgauche->cle;
+          tmp->fdroite=detruire_cle_arbre(tmp->fdroite,tmp->fdroite->cle);
+        }
+      }
     }
   }
   return a;
@@ -469,8 +465,9 @@ Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2)
 int inclusion_arbre(Arbre_t a1, Arbre_t a2){
   pfile_t f=creer_file();
   enfiler(f,a1);
+  Arbre_t tmp;
   while(!file_vide(f)){
-    Arbre_t tmp=defiler(f);
+    tmp=defiler(f);
     enfiler(f,tmp->fgauche);
     enfiler(f,tmp->fdroite);
     if(tmp!=NULL && rechercher_cle_arbre(a2,tmp->cle)==NULL)return 0;
