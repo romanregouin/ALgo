@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "avl.h"
+#include <time.h>
 
 int main(int argc,char** argv){
 
@@ -10,7 +11,8 @@ int main(int argc,char** argv){
   a1=lire_arbre("avl_test_suppression");
   
   afficher_arbre(a1,0);
-
+  clock_t t1, t2;
+  t1 = clock();
   //Test de suppression sur chaque clé de l'arbre
   // fontion testée : detruire_cle_arbre2 (Sophie)
   printf("-----------------------------Suppression 10-------------------------\n");
@@ -57,5 +59,8 @@ int main(int argc,char** argv){
   printf("-----------------------Suppression 100 (inexistante)------------------\n");
   a1=lire_arbre("avl_test_suppression");
   afficher_arbre(detruire_cle_arbre2(a1,100),0);
+  t2 = clock();
+  float temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+  printf("\n\n Temps du programme %f \n\n",temps);
 }
 
