@@ -150,6 +150,7 @@ int hauteur_arbre_nr (Arbre_t a)
       empiler(p,a->fgauche);
     }
   }
+  detruire_pile(p);
   return max;
 }
 
@@ -164,6 +165,7 @@ void parcourir_arbre_largeur (Arbre_t a)
     enfiler(f,tmp->fdroite);
     printf("%d  ",tmp->cle);
   }
+  detruire_file(f);
   printf("\n");
 }
 
@@ -185,8 +187,10 @@ void afficher_nombre_noeuds_par_niveau (Arbre_t a)
       empiler(p,a->fgauche);
     }
   }
+  detruire_pile(p);
   printf("Nb noeud au niveau 0 : 1\n");
   for(int i=1;i<20 && tab2[i]!=0;i++)printf("Nb noeud au niveau %d : %d\n",i,tab2[i]);
+  free(tab2);
 }
 
 
@@ -212,6 +216,7 @@ int nombre_cles_arbre_nr (Arbre_t a)
       empiler(p,a->fgauche);
     }
   }
+  detruire_pile(p);
   return nb;
 }
 
@@ -266,6 +271,7 @@ void imprimer_liste_cle_triee_nr (Arbre_t a)
       empiler(p,a);
     }
   }
+  detruire_pile(p);
   printf("\n");
 }
 
@@ -292,10 +298,12 @@ int arbre_plein (Arbre_t a)
       empiler(p,a->fgauche);
     }
   }
+  detruire_pile(p);
   int drapeau=0;
   for(int i=0;i<20 && tab2[i]!=0;i++){
     if(tab2[i]!=puissance(2,i))drapeau++;
   }
+  free(tab2);
   if(drapeau>1)return 0;
   return 1;
 }
@@ -315,10 +323,16 @@ int arbre_parfait (Arbre_t a)
       empiler(p,a->fgauche);
     }
   }
+  detruire_pile(p);
   for(int i=0;i<20 && tab2[i]!=0;i++){
-    if(tab2[i]!=puissance(2,i))return 0;
+    if(tab2[i]!=puissance(2,i)){
+      free(tab2);
+      return 0;
+    }
   }
+  free(tab2);
   return 1;
+   
 }
 
 
@@ -388,8 +402,10 @@ Arbre_t rechercher_cle_inf_arbre (Arbre_t a, int valeur,Arbre_t max)
 
 Arbre_t detruire_cle_arbre(Arbre_t a,int cle){
   if(a==NULL)return NULL;
-  if(feuille(a) && a->cle==cle)return NULL;
-  else if(a->cle<cle)a->fdroite=detruire_cle_arbre(a->fdroite,cle);
+  if(feuille(a) && a->cle==cle){
+    free(a);
+    return NULL;
+  }else if(a->cle<cle)a->fdroite=detruire_cle_arbre(a->fdroite,cle);
   else if(a->cle>cle)a->fgauche=detruire_cle_arbre(a->fgauche,cle);
   else{
     Arbre_t tmp;
@@ -401,11 +417,7 @@ Arbre_t detruire_cle_arbre(Arbre_t a,int cle){
       }else{
         while(tmp->fgauche->fgauche!=NULL)tmp=tmp->fgauche;
         a->cle=tmp->fgauche->cle;
-        if(tmp->fgauche->fdroite==NULL)tmp->fgauche=NULL;
-        else {
-          //tmp->fgauche->cle=tmp->fgauche->fdroite->cle;
-          tmp->fgauche=detruire_cle_arbre(tmp->fgauche,tmp->fgauche->cle);
-        }
+        tmp->fgauche=detruire_cle_arbre(tmp->fgauche,tmp->fgauche->cle);
       }
     }else{
       tmp=a->fgauche;
@@ -415,11 +427,7 @@ Arbre_t detruire_cle_arbre(Arbre_t a,int cle){
       }else{
         while(tmp->fdroite->fdroite!=NULL)tmp=tmp->fdroite;
         a->cle=tmp->fdroite->cle;
-        if(tmp->fdroite->fgauche==NULL)tmp->fdroite=NULL;
-        else {
-          //tmp->fdroite->cle=tmp->fdroite->fgauche->cle;
-          tmp->fdroite=detruire_cle_arbre(tmp->fdroite,tmp->fdroite->cle);
-        }
+        tmp->fdroite=detruire_cle_arbre(tmp->fdroite,tmp->fdroite->cle);
       }
     }
   }
@@ -442,6 +450,7 @@ Arbre_t intersection_deux_arbres (Arbre_t a1, Arbre_t a2)
       res = ajouter_cle(res,tmp->cle);
     }
   }
+  detruire_file(f);
   return res; 
 }
 
@@ -458,7 +467,7 @@ Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2)
     enfiler(f,tmp->fgauche);
     res = ajouter_cle(res,tmp->cle);
   }
-  
+  detruire_file(f);
   return res;
 }
 
@@ -470,7 +479,27 @@ int inclusion_arbre(Arbre_t a1, Arbre_t a2){
     tmp=defiler(f);
     enfiler(f,tmp->fgauche);
     enfiler(f,tmp->fdroite);
-    if(tmp!=NULL && rechercher_cle_arbre(a2,tmp->cle)==NULL)return 0;
+    if(tmp!=NULL && rechercher_cle_arbre(a2,tmp->cle)==NULL){
+      detruire_file(f);
+      return 0;
+    }
   }
+  detruire_file(f);
   return 1;
+}
+
+
+
+
+void liberer_arbre (Arbre_t a)
+{
+  pfile_t f=creer_file();
+  enfiler(f,a);
+  while(!file_vide(f)){
+    Arbre_t tmp=defiler(f);
+    enfiler(f,tmp->fgauche);
+    enfiler(f,tmp->fdroite);
+    free(tmp);
+  }
+  detruire_file(f);
 }

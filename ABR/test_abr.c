@@ -20,7 +20,7 @@ int main (int argc, char**argv)
   Arbre_t a ;
 
 
-  a = lire_arbre ("arbre1") ;
+  a = lire_arbre ("arbre1") ; // On travaille tout  le long du test sur cet arbre
   
   afficher_arbre (a,0) ;
 
@@ -38,20 +38,20 @@ int main (int argc, char**argv)
   
   
   parcourir_arbre_largeur(a);
-  printf("Succes fonction parcours largeur !\n"); // A verifier lors de l'affichage
+  printf("Succes fonction parcours largeur !\n"); 
   succes++;
 
 
 
   afficher_nombre_noeuds_par_niveau(a);
-  printf("Succes fonction parcours largeur !\n"); // A verifier lors de l'affichage en copmparant a l'arbre
+  printf("Succes fonction parcours largeur !\n"); 
   succes++;
 
 
 
   h1=nombre_cles_arbre_r(a);
   h2=nombre_cles_arbre_nr(a);
-   if(h1!=h2){
+  if(h1!=h2){
     printf("Erreur le nombre de clé est différent sur un meme arbre !\n");
   }else succes++;
   if(h1!=10){
@@ -166,6 +166,7 @@ int main (int argc, char**argv)
   }
   int err2=0;
   Arbre_t tmp2;
+  liberer_arbre(tmp);
   tmp=union_deux_arbres(a,b);
   ppile_t p = creer_pile();
   empiler(p,tmp);
@@ -182,8 +183,10 @@ int main (int argc, char**argv)
     printf("Err2: Arbre1/2; ");
     err++;
   }
-
+  liberer_arbre(tmp);
   err2=0;
+  liberer_arbre(a);
+  liberer_arbre(b);
   b=lire_arbre("arbre3");
   a=lire_arbre("arbre4");
   tmp=union_deux_arbres(a,b);
@@ -197,7 +200,7 @@ int main (int argc, char**argv)
     }
   }
 
-
+  liberer_arbre(tmp);
 
   if(err2>0){
     printf("Err3: Arbre3/4;  ");
@@ -217,6 +220,8 @@ int main (int argc, char**argv)
 
   err=0;
   err2=0;
+  liberer_arbre(a);
+  liberer_arbre(b);
   b=lire_arbre("arbre3");
   a=lire_arbre("arbre4");
   tmp=intersection_deux_arbres(a,b);
@@ -230,7 +235,7 @@ int main (int argc, char**argv)
     }
   }
 
-
+  liberer_arbre(tmp);
   if(err2>0){
     printf("Err1: Arbre3/4;  ");
     err++;
@@ -238,6 +243,8 @@ int main (int argc, char**argv)
 
 
   err2=0;
+  liberer_arbre(a);
+  liberer_arbre(b);
   b=lire_arbre("arbre2");
   a=lire_arbre("arbre1");
   tmp=intersection_deux_arbres(a,b);
@@ -250,8 +257,8 @@ int main (int argc, char**argv)
       empiler(p,tmp2->fgauche);
     }
   }
-
-
+  detruire_pile(p);
+  liberer_arbre(tmp);
   if(err2>0){
     printf("Err1: Arbre1/2;  ");
     err++;
@@ -271,6 +278,8 @@ int main (int argc, char**argv)
 
 
   err=0;
+  
+  liberer_arbre(b);
   b=lire_arbre("test_delet_cle");
   afficher_arbre(a,0);
   afficher_arbre(b,0);
@@ -282,7 +291,23 @@ int main (int argc, char**argv)
     succes++;
     printf("Succes fonction Supression_cle !\n");
   }
+
+
+  a=detruire_cle_arbre(a,4);
+  afficher_arbre(a,0);
+  a=detruire_cle_arbre(a,5);
+  afficher_arbre(a,0);
+  a=detruire_cle_arbre(a,2);
+  afficher_arbre(a,0);
+  a=detruire_cle_arbre(a,9);
+  afficher_arbre(a,0);
   //afficher_arbre(a,0);
+ 
+ 
+ 
+ 
+ 
+ 
   err=0;
   Arbre_t c=lire_arbre("arbre3");
   if(!inclusion_arbre(a,b))err++;
@@ -293,5 +318,7 @@ int main (int argc, char**argv)
   }
 
   printf("\nPassé %d/14 Tests !\n",succes);
-
+  liberer_arbre(c);
+  liberer_arbre(b);
+  liberer_arbre(a);
 }

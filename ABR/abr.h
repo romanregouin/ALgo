@@ -59,5 +59,6 @@ Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2) ;
 
 int inclusion_arbre(Arbre_t a1, Arbre_t a2) ;
 
+void liberer_arbre (Arbre_t a);
 
 #endif
