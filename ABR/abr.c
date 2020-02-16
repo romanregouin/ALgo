@@ -471,7 +471,7 @@ Arbre_t union_deux_arbres (Arbre_t a1, Arbre_t a2)
   return res;
 }
 
-int inclusion_arbre(Arbre_t a1, Arbre_t a2){
+int inclusion_arbre(Arbre_t a1, Arbre_t a2){    // Cherche uniquement pour les valeurs
   pfile_t f=creer_file();
   enfiler(f,a1);
   Arbre_t tmp;
@@ -488,7 +488,14 @@ int inclusion_arbre(Arbre_t a1, Arbre_t a2){
   return 1;
 }
 
-
+int inclusion_arbre2(Arbre_t a1, Arbre_t a2){  // Regarde uniquement la structure 
+  if(a1==NULL && a2==NULL)return 1;
+  else if(a1==NULL || a2==NULL)return 0;
+  if(a1->cle>a2->cle)return inclusion_arbre2(a1,a2->fdroite);
+  else if(a1->cle<a2->cle)return inclusion_arbre2(a1,a2->fgauche);
+  else if(a1->fdroite->cle==a2->fdroite->cle && a1->fgauche->cle==a2->fgauche->cle)return inclusion_arbre2(a1->fdroite,a2->fdroite) && inclusion_arbre2(a1->fgauche,a2->fgauche);
+  return 0;
+}
 
 
 void liberer_arbre (Arbre_t a)
